@@ -176,7 +176,7 @@ class Video():
         # Setting ffmpeg
         args = [
             'ffmpeg', '-i', self.path + self.filename_origin, '-map', '0:v',
-            '-map', '0:a?', '-map', '0:s?'
+            '-map', '0:a?', '-map', '0:s?', '-map_metadata', '0'
         ]
 
         # Conversion options
@@ -193,6 +193,7 @@ class Video():
 
         # Add mapping for video, audio, and subtitle streams
         args += ['-c:a', 'copy', '-c:s', 'copy']
+
         # Conversion output
         args += [self.path + self.filename_tmp]
 
