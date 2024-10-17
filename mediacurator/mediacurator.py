@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-    MediaCurator is a Python command line tool to manage a media database.
+    mediacurator is a Python command line tool to manage a media database.
         * List all the video's and their codecs with or without filters
         * Batch recode videos to more modern codecs (x265 / AV1) based on filters: extentions, codecs ...
     ex:
@@ -35,7 +35,7 @@ creset = colorama.Fore.RESET
 
 def main():
     '''
-    MediaCurator's main function
+    mediacurator's main function
     
     Returns:
     '''

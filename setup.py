@@ -6,18 +6,18 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="MediaCurator",
+    name="mediacurator",
     version="0.0.13",
     author="Fabrice Quenneville",
     author_email="fab@fabq.ca",
-    url="https://github.com/fabquenneville/MediaCurator",
-    download_url="https://pypi.python.org/pypi/MediaCurator",
+    url="https://github.com/fabquenneville/mediacurator",
+    download_url="https://pypi.python.org/pypi/mediacurator",
     project_urls={
-        "Bug Tracker": "https://github.com/fabquenneville/MediaCurator/issues",
-        "Documentation": "https://fabquenneville.github.io/MediaCurator/",
-        "Source Code": "https://github.com/fabquenneville/MediaCurator",
+        "Bug Tracker": "https://github.com/fabquenneville/mediacurator/issues",
+        "Documentation": "https://fabquenneville.github.io/mediacurator/",
+        "Source Code": "https://github.com/fabquenneville/mediacurator",
     },
-    description="MediaCurator is a Python command line tool to manage a media database.",
+    description="mediacurator is a Python command line tool to manage a media database.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),

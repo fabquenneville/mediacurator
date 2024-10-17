@@ -1,0 +1,52 @@
+========================================
+mediacurator 1.0.1 Release Notes
+========================================
+
+Highlights
+==========
+
+Dropped Support
+===============
+
+Compatibility Notes
+====================
+
+* Renamed 
+
+Python Support
+--------------
+
+mediacurator has been tested on Python 3.12.6.
+
+FFMPEG Support
+--------------
+
+mediacurator has been tested to work with FFMPEG version 7.0.2.
+
+OS Support
+----------
+
+mediacurator has been tested to work on various GNU/Linux distributions as well as Windows.
+
+New Features
+============
+
+Improvements
+============
+
+* Standardized audio, subtitle and metadata copying.
+* Added support for .mov and .ts formats.
+* Introduced CRF (Constant Rate Factor) settings for AV1 and x265 for better control over quality and file size.
+
+Changes
+=======
+
+Deprecations
+============
+
+Future Changes
+==============
+
+* More filters
+* Test AV1 Support
+* Prepare API for GUI

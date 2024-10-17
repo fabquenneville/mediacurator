@@ -5,7 +5,7 @@ Manual
 Name
 ----
 
-MediaCurator
+mediacurator
 
 Synopsis
 --------
@@ -34,7 +34,7 @@ default options are:
 Description
 -----------
 
-MediaCurator is a Python command line tool to manage a media database.
+mediacurator is a Python command line tool to manage a media database.
 
 * List all the video's and their information with or without filters
 * Batch find and repair/convert videos with encoding errors

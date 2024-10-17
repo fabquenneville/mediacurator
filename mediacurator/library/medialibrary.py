@@ -57,9 +57,9 @@ class MediaLibrary():
 
         text = ""
         if self.directories:
-            text += f"MediaCurator is watching the following directories: "
+            text += f"mediacurator is watching the following directories: "
             text += '\n    '.join(map(str, self.directories)) + '\n'
-        text += f"MediaCurator is tracking {len(self.videos)} video files"
+        text += f"mediacurator is tracking {len(self.videos)} video files"
         return text
 
     def load_directories(self, verbose=False):
