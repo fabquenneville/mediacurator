@@ -90,6 +90,8 @@ class MediaLibrary():
                 videolist += list(path.rglob("*.[fF][lL][vV]"))
             if "mpg" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][pP][gG]"))
+            if "mov" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+                videolist += list(path.rglob("*.[mM][oO][vV]"))
             if "mpeg" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][pP][eE][gG]"))
             if "vid" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
@@ -100,6 +102,8 @@ class MediaLibrary():
                 videolist += list(path.rglob("*.[dD][iI][vV][xX]"))
             if "ogm" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
                 videolist += list(path.rglob("*.[oO][gG][mM]"))
+            if "ts" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+                videolist += list(path.rglob("*.[tT][sS]"))
             if "webm" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
                 videolist += list(path.rglob("*.[wW][eE][bB][mM]"))
         

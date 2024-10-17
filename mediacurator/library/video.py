@@ -15,7 +15,7 @@ cred = colorama.Fore.RED
 creset = colorama.Fore.RESET
 
 class Video():
-    '''Contains the information and methods of a video file.'''        
+    '''Contains the information and methods of a video file.'''
 
     def __init__(self, filepath, operate=True, verbose=False):
         '''Initializes a Video instance with provided parameters.
@@ -38,7 +38,7 @@ class Video():
         self.definition = None
         self.width = None
         self.height = None
-        
+
         # Break down the full path into its components
         if os.name == 'nt':
             self.path = str(filepath)[:str(filepath).rindex("\\") + 1]
@@ -61,13 +61,13 @@ class Video():
             try:
                 self.width, self.height = self.detect_resolution(filepath)
                 self.definition = self.detect_definition(
-                    width=self.width, 
+                    width=self.width,
                     height=self.height
                 )
             except:
                 self.width, self.height = False, False
                 self.definition = False
-        
+
         if self.error and verbose:
             print(f"{cred}There seems to be an error with \"{filepath}\"{creset}")
             print(f"{cred}    {self.error}{creset}")
@@ -81,7 +81,7 @@ class Video():
 
         if type(self.error) is str and "FileNotFoundError" in self.error:
             return self.error
-        
+
         text = f"{self.codec} - "
 
         # If the first character of the definition is not a number (e.g., UHD and not 720p), upper it
@@ -95,7 +95,7 @@ class Video():
             text += f"{self.filesize / 1024 :.2f} GB - "
         else:
             text += f"{self.filesize} MB - "
-        
+
         text += f"'{self.path + self.filename_origin}'"
 
         if self.error:
@@ -116,7 +116,7 @@ class Video():
 
         if type(self.error) is str and "FileNotFoundError" in self.error:
             return self.error
-        
+
         text = f"{self.path + self.filename_origin}\n"
 
         if self.definition and self.definition[0] and not self.definition[0].isnumeric():
@@ -174,17 +174,28 @@ class Video():
         self.filename_tmp = newfilename
 
         # Setting ffmpeg
-        args = ['ffmpeg', '-i', self.path + self.filename_origin]
+        args = [
+            'ffmpeg', '-i', self.path + self.filename_origin, '-map', '0:v',
+            '-map', '0:a?', '-map', '0:s?'
+        ]
 
         # Conversion options
         if vcodec == "av1":
-            args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
+            args += ['-c:v', 'libaom-av1']
+            # Optionally, control quality with a crf value for AV1
+            args += ['-crf', '30']
         elif vcodec == "x265" or vcodec == "hevc":
             args += ['-c:v', 'libx265']
+            # Add max_muxing_queue_size to avoid buffer overflows
             args += ['-max_muxing_queue_size', '1000']
+            # Control quality with crf for x265
+            args += ['-preset', 'medium', '-crf', '28']
+
+        # Add mapping for video, audio, and subtitle streams
+        args += ['-c:a', 'copy', '-c:s', 'copy']
         # Conversion output
         args += [self.path + self.filename_tmp]
-        
+
         try:
             if verbose:
                 subprocess.call(args)
@@ -292,7 +303,7 @@ class Video():
             width, height = Video.detect_resolution(filepath)
         if not width and not height:
             return False
-        
+
         if width >= 2160 or height >= 2160:
             return "uhd"
         elif width >= 1440 or height >= 1080:
