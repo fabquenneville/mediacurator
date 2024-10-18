@@ -9,6 +9,7 @@ import sys
 
 # Import colorama for colored output
 import colorama
+
 colorama.init()
 
 # Define color codes for colored output
@@ -16,6 +17,7 @@ cgreen = colorama.Fore.GREEN
 cyellow = colorama.Fore.YELLOW
 cred = colorama.Fore.RED
 creset = colorama.Fore.RESET
+
 
 def load_arguments():
     '''Get/load command parameters
@@ -35,9 +37,10 @@ def load_arguments():
     for arg in sys.argv:
         # Confirm with the user that they selected to delete found files
         if "-del" in arg:
-            print(
-                f"{cyellow}WARNING: Delete option selected!{creset}")
-            if not user_confirm(f"Are you sure you wish to delete all found results after selected operations are successful? [Y/N] ?", color="yellow"):
+            print(f"{cyellow}WARNING: Delete option selected!{creset}")
+            if not user_confirm(
+                    f"Are you sure you wish to delete all found results after selected operations are successful? [Y/N] ?",
+                    color="yellow"):
                 print(f"{cgreen}Exiting!{creset}")
                 exit()
         elif "-in:" in arg:
@@ -64,8 +67,8 @@ def detect_ffmpeg():
         False: If version retrieval failed
     '''
     try:
-        txt = subprocess.check_output(
-            ['ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
+        txt = subprocess.check_output(['ffmpeg', '-version'],
+                                      stderr=subprocess.STDOUT).decode()
         if "ffmpeg version" in txt:
             # Strip the useless text
             return txt.split(' ')[2]

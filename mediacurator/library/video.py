@@ -7,12 +7,14 @@ import os
 
 # Import colorama for colored output
 import colorama
+
 colorama.init()
 
 # Define color codes for colored output
 cyellow = colorama.Fore.YELLOW
 cred = colorama.Fore.RED
 creset = colorama.Fore.RESET
+
 
 class Video():
     '''Contains the information and methods of a video file.'''
@@ -42,10 +44,12 @@ class Video():
         # Break down the full path into its components
         if os.name == 'nt':
             self.path = str(filepath)[:str(filepath).rindex("\\") + 1]
-            self.filename_origin = str(filepath)[str(filepath).rindex("\\") + 1:]
+            self.filename_origin = str(filepath)[str(filepath).rindex("\\") +
+                                                 1:]
         else:
             self.path = str(filepath)[:str(filepath).rindex("/") + 1]
-            self.filename_origin = str(filepath)[str(filepath).rindex("/") + 1:]
+            self.filename_origin = str(filepath)[str(filepath).rindex("/") +
+                                                 1:]
 
         if not os.path.exists(filepath):
             self.error = f"FileNotFoundError: [Errno 2] No such file or directory: '{filepath}'"
@@ -60,16 +64,16 @@ class Video():
             self.codec = self.detect_codec(filepath)
             try:
                 self.width, self.height = self.detect_resolution(filepath)
-                self.definition = self.detect_definition(
-                    width=self.width,
-                    height=self.height
-                )
+                self.definition = self.detect_definition(width=self.width,
+                                                         height=self.height)
             except:
                 self.width, self.height = False, False
                 self.definition = False
 
         if self.error and verbose:
-            print(f"{cred}There seems to be an error with \"{filepath}\"{creset}")
+            print(
+                f"{cred}There seems to be an error with \"{filepath}\"{creset}"
+            )
             print(f"{cred}    {self.error}{creset}")
 
     def __str__(self):
@@ -85,7 +89,8 @@ class Video():
         text = f"{self.codec} - "
 
         # If the first character of the definition is not a number (e.g., UHD and not 720p), upper it
-        if self.definition and self.definition[0] and not self.definition[0].isnumeric():
+        if self.definition and self.definition[
+                0] and not self.definition[0].isnumeric():
             text += f"{self.definition.upper()}: ({self.width}x{self.height}) - "
         else:
             text += f"{self.definition}: ({self.width}x{self.height}) - "
@@ -119,7 +124,8 @@ class Video():
 
         text = f"{self.path + self.filename_origin}\n"
 
-        if self.definition and self.definition[0] and not self.definition[0].isnumeric():
+        if self.definition and self.definition[
+                0] and not self.definition[0].isnumeric():
             text += f"    Definition:     {self.definition.upper()}: ({self.width}x{self.height})\n"
         else:
             text += f"    Definition:     {self.definition}: ({self.width}x{self.height})\n"
@@ -139,7 +145,11 @@ class Video():
 
         return text
 
-    def convert(self, vcodec="x265", acodec=False, extension="mkv", verbose=False):
+    def convert(self,
+                vcodec="x265",
+                acodec=False,
+                extension="mkv",
+                verbose=False):
         '''
         Converts the original file to the requested format / codec.
 
@@ -159,17 +169,21 @@ class Video():
             if os.path.exists(self.path + newfilename):
                 newfilename = findfreename(self.path + newfilename)
                 if os.name == 'nt':
-                    newfilename = str(newfilename)[str(newfilename).rindex("\\") + 1:]
+                    newfilename = str(
+                        newfilename)[str(newfilename).rindex("\\") + 1:]
                 else:
-                    newfilename = str(newfilename)[str(newfilename).rindex("/") + 1:]
+                    newfilename = str(
+                        newfilename)[str(newfilename).rindex("/") + 1:]
         else:
             newfilename = self.filename_origin[:-4] + ".mkv"
             if os.path.exists(self.path + newfilename):
                 newfilename = findfreename(self.path + newfilename)
                 if os.name == 'nt':
-                    newfilename = str(newfilename)[str(newfilename).rindex("\\") + 1:]
+                    newfilename = str(
+                        newfilename)[str(newfilename).rindex("\\") + 1:]
                 else:
-                    newfilename = str(newfilename)[str(newfilename).rindex("/") + 1:]
+                    newfilename = str(
+                        newfilename)[str(newfilename).rindex("/") + 1:]
 
         self.filename_tmp = newfilename
 
@@ -216,7 +230,9 @@ class Video():
             try:
                 os.chmod(f"{self.path}{self.filename_tmp}", 0o777)
             except PermissionError:
-                print(f"{cred}PermissionError on: '{self.path}{self.filename_tmp}'{creset}")
+                print(
+                    f"{cred}PermissionError on: '{self.path}{self.filename_tmp}'{creset}"
+                )
             self.filename_new = self.filename_tmp
             self.filename_tmp = ""
             return True
@@ -255,7 +271,12 @@ class Video():
         '''
         output = False
         try:
-            args = ["ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
+            args = [
+                "ffprobe", "-v", "quiet", "-select_streams", "v:0",
+                "-show_entries", "stream=codec_name", "-of",
+                "default=noprint_wrappers=1:nokey=1",
+                str(filepath)
+            ]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
             # Decoding from binary, stripping whitespace, keep only last line
             # in case ffprobe added error messages over the requested information
@@ -276,7 +297,11 @@ class Video():
             False: An error in the resolution fetching process.
         '''
         try:
-            args = ["ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=s=x:p=0", str(filepath)]
+            args = [
+                "ffprobe", "-v", "quiet", "-select_streams", "v:0",
+                "-show_entries", "stream=width,height", "-of", "csv=s=x:p=0",
+                str(filepath)
+            ]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
             # Decoding from binary, stripping whitespace, keep only last line
             # in case ffprobe added error messages over the requested information

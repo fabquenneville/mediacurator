@@ -8,16 +8,23 @@ from .tools import deletefile
 
 # Import colorama for colored output
 import colorama
+
 colorama.init()
 
 # Define color codes for colored output
 cgreen = colorama.Fore.GREEN
 creset = colorama.Fore.RESET
 
+
 class MediaLibrary():
     '''This class manages information about the workspace and all videos in it.'''
 
-    def __init__(self, files=False, directories=False, inputs=["any"], filters=[], verbose=False):
+    def __init__(self,
+                 files=False,
+                 directories=False,
+                 inputs=["any"],
+                 filters=[],
+                 verbose=False):
         '''
         Initializes a MediaLibrary instance with provided parameters.
 
@@ -31,12 +38,12 @@ class MediaLibrary():
 
         if not files and not directories:
             return
-        
+
         self.directories = None
         self.inputs = inputs
         self.filters = filters
         self.videos = dict()
-        
+
         if files:
             for filepath in files:
                 self.videos[filepath] = Video(filepath, verbose=verbose)
@@ -44,7 +51,7 @@ class MediaLibrary():
         if directories:
             self.directories = directories
             self.load_directories(verbose=verbose)
-        
+
         self.filter_videos(verbose=verbose)
 
     def __str__(self):
@@ -70,55 +77,75 @@ class MediaLibrary():
             verbose (bool): A flag to enable verbose output.
         '''
 
-        print(f"{cgreen}Scanning files in {', '.join(map(str, self.directories))} for videos{creset}")
+        print(
+            f"{cgreen}Scanning files in {', '.join(map(str, self.directories))} for videos{creset}"
+        )
         videolist = []
-        
+
         for directory in self.directories:
             path = Path(directory)
             # get all video filetypes
-            if "wmv" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "wmv" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[wW][mM][vV]"))
-            if "avi" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "avi" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[aA][vV][iI]"))
-            if "mkv" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "mkv" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][kK][vV]"))
-            if "mp4" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "mp4" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][pP]4"))
-            if "m4v" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "m4v" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM]4[vV]"))
-            if "flv" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "flv" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[fF][lL][vV]"))
-            if "mpg" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "mpg" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][pP][gG]"))
-            if "mov" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "mov" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][oO][vV]"))
-            if "mpeg" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "mpeg" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[mM][pP][eE][gG]"))
-            if "vid" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "vid" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[vV][iI][dD]"))
-            if "vob" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "vob" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[vV][oO][bB]"))
-            if "divx" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "divx" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[dD][iI][vV][xX]"))
-            if "ogm" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "ogm" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[oO][gG][mM]"))
-            if "ts" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "ts" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[tT][sS]"))
-            if "webm" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
+            if "webm" in self.inputs or "any" in self.inputs or len(
+                    self.inputs) < 1:
                 videolist += list(path.rglob("*.[wW][eE][bB][mM]"))
-        
+
         # Remove folders
         videolist_tmp = videolist
         videolist = [video for video in videolist_tmp if video.is_file()]
 
         # Map it all to the videos dictionary as initiated Video objects
-        print(f"{cgreen}Analyzing {len(videolist)} videos in {', '.join(map(str, self.directories))}{creset}")
+        print(
+            f"{cgreen}Analyzing {len(videolist)} videos in {', '.join(map(str, self.directories))}{creset}"
+        )
         iteration = 0
         for video in videolist:
             if verbose:
                 iteration += 1
-                print(f'{int((iteration / len(videolist) * 100))}% complete', end='\r')
-            
+                print(f'{int((iteration / len(videolist) * 100))}% complete',
+                      end='\r')
+
             self.videos[video] = Video(video, verbose=verbose)
 
     def filter_videos(self, verbose=False):
@@ -129,57 +156,89 @@ class MediaLibrary():
             verbose (bool): A flag to enable verbose output.
         '''
 
-        print(f"{cgreen}Filtering {len(self.videos)} videos for the requested parameters{creset}")
+        print(
+            f"{cgreen}Filtering {len(self.videos)} videos for the requested parameters{creset}"
+        )
 
         for filepath in self.videos:
 
             # Filter for filetypes
-            if len([filtr for filtr in self.filters if filtr in ["old", "mpeg4", "mpeg", "wmv3", "wmv", "h264", "hevc", "x265", "av1"]]) > 0:
+            if len([
+                    filtr for filtr in self.filters if filtr in [
+                        "old", "mpeg4", "mpeg", "wmv3", "wmv", "h264", "hevc",
+                        "x265", "av1"
+                    ]
+            ]) > 0:
                 operate = False
-                if "old" in self.filters and self.videos[filepath].codec not in ["hevc", "av1"]:
+                if "old" in self.filters and self.videos[
+                        filepath].codec not in ["hevc", "av1"]:
                     operate = True
-                if ("mpeg4" in self.filters or "mpeg" in self.filters) and self.videos[filepath].codec in ["mpeg4", "msmpeg4v3"]:
+                if ("mpeg4" in self.filters or "mpeg"
+                        in self.filters) and self.videos[filepath].codec in [
+                            "mpeg4", "msmpeg4v3"
+                        ]:
                     operate = True
-                if "mpeg" in self.filters and self.videos[filepath].codec in ["mpeg1video"]:
+                if "mpeg" in self.filters and self.videos[filepath].codec in [
+                        "mpeg1video"
+                ]:
                     operate = True
-                if ("wmv3" in self.filters or "wmv" in self.filters) and self.videos[filepath].codec in ["wmv3"]:
+                if ("wmv3" in self.filters or "wmv" in self.filters
+                    ) and self.videos[filepath].codec in ["wmv3"]:
                     operate = True
-                if "h264" in self.filters and self.videos[filepath].codec in ["h264"]:
+                if "h264" in self.filters and self.videos[filepath].codec in [
+                        "h264"
+                ]:
                     operate = True
-                if ("hevc" in self.filters or "x265" in self.filters) and self.videos[filepath].codec in ["hevc"]:
+                if ("hevc" in self.filters or "x265" in self.filters
+                    ) and self.videos[filepath].codec in ["hevc"]:
                     operate = True
-                if "av1" in self.filters and self.videos[filepath].codec in ["av1"]:
+                if "av1" in self.filters and self.videos[filepath].codec in [
+                        "av1"
+                ]:
                     operate = True
                 self.videos[filepath].operate = operate
 
             # Keep video for operation if specified resolution
-            if self.videos[filepath].operate and len([filtr for filtr in self.filters if filtr in ["lowres", "hd", "subsd", "sd", "720p", "1080p", "uhd"]]) > 0:
+            if self.videos[filepath].operate and len([
+                    filtr for filtr in self.filters if filtr in
+                ["lowres", "hd", "subsd", "sd", "720p", "1080p", "uhd"]
+            ]) > 0:
                 operate = False
 
-                if "subsd" in self.filters and self.videos[filepath].definition in ["subsd"]:
+                if "subsd" in self.filters and self.videos[
+                        filepath].definition in ["subsd"]:
                     operate = True
-                if "sd" in self.filters and self.videos[filepath].definition in ["sd"]:
+                if "sd" in self.filters and self.videos[
+                        filepath].definition in ["sd"]:
                     operate = True
-                if "720p" in self.filters and self.videos[filepath].definition in ["720p"]:
+                if "720p" in self.filters and self.videos[
+                        filepath].definition in ["720p"]:
                     operate = True
-                if "1080p" in self.filters and self.videos[filepath].definition in ["1080p"]:
+                if "1080p" in self.filters and self.videos[
+                        filepath].definition in ["1080p"]:
                     operate = True
-                if "uhd" in self.filters and self.videos[filepath].definition in ["uhd"]:
+                if "uhd" in self.filters and self.videos[
+                        filepath].definition in ["uhd"]:
                     operate = True
-                if "lowres" in self.filters and self.videos[filepath].definition in ["subsd", "sd"]:
+                if "lowres" in self.filters and self.videos[
+                        filepath].definition in ["subsd", "sd"]:
                     operate = True
-                if "hd" in self.filters and self.videos[filepath].definition in ["720p", "1080p", "uhd"]:
+                if "hd" in self.filters and self.videos[
+                        filepath].definition in ["720p", "1080p", "uhd"]:
                     operate = True
                 self.videos[filepath].operate = operate
 
             # Keep video for operation if ffmpeg error exists
-            if self.videos[filepath].operate and len([filtr for filtr in self.filters if filtr in ["fferror"]]) > 0:
+            if self.videos[filepath].operate and len(
+                [filtr for filtr in self.filters if filtr in ["fferror"]]) > 0:
                 operate = False
                 if self.videos[filepath].error:
                     operate = True
                 self.videos[filepath].operate = operate
-            
-        print(f"{cgreen}Found {len([filepath for filepath in self.videos if self.videos[filepath].operate])} videos for the requested parameters{creset}")
+
+        print(
+            f"{cgreen}Found {len([filepath for filepath in self.videos if self.videos[filepath].operate])} videos for the requested parameters{creset}"
+        )
 
     def unwatch(self, filepath, delete=False):
         '''
@@ -192,7 +251,7 @@ class MediaLibrary():
         Returns:
             bool: True if operation successful, False otherwise.
         '''
-        
+
         if delete:
             deletefile(filepath)
         try:

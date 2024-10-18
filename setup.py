@@ -17,7 +17,8 @@ setuptools.setup(
         "Documentation": "https://fabquenneville.github.io/mediacurator/",
         "Source Code": "https://github.com/fabquenneville/mediacurator",
     },
-    description="mediacurator is a Python command line tool to manage a media database.",
+    description=
+    "mediacurator is a Python command line tool to manage a media database.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
@@ -30,15 +31,14 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Environment :: Console",
     ],
-    entry_points = {
+    entry_points={
         'console_scripts': ['mediacurator=mediacurator.mediacurator:main'],
     },
     keywords=[
-        "codecs", "filters", "video", "x265", "av1", "media-database", "python-command", "hevc"
+        "codecs", "filters", "video", "x265", "av1", "media-database",
+        "python-command", "hevc"
     ],
-    install_requires=[
-        "pathlib","colorama"
-    ],
+    install_requires=["pathlib", "colorama"],
     license='GPL-3.0',
     python_requires='>=3.6',
     test_suite='nose.collector',
