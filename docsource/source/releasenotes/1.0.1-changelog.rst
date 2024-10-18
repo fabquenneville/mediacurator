@@ -34,9 +34,11 @@ New Features
 Improvements
 ============
 
+* Added line break in conversion output before each video to improve readability.
 * Standardized audio, subtitle and metadata copying.
 * Added support for .mov and .ts formats.
 * Introduced CRF (Constant Rate Factor) settings for AV1 and x265 for better control over quality and file size.
+* Implemented handling for odd pixel dimensions by adding black pixel padding to ensure even width and height.
 
 Changes
 =======
