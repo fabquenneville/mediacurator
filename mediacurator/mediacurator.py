@@ -149,7 +149,7 @@ def main():
 
             # Verbosing
             print(
-                f"{cgreen}******  Starting conversion {counter} of {len(keylist)}: '{ccyan}{medialibrary.videos[filepath].filename_origin}{cgreen}' from {ccyan}{medialibrary.videos[filepath].codec}{cgreen} to {ccyan}{vcodec}{cgreen}...{creset}"
+                f"{cgreen}\n******  Starting conversion {counter} of {len(keylist)}: '{ccyan}{medialibrary.videos[filepath].filename_origin}{cgreen}' from {ccyan}{medialibrary.videos[filepath].codec}{cgreen} to {ccyan}{vcodec}{cgreen}...{creset}"
             )
             print(f"{ccyan}Original file:{creset}")
             if "formated" in arguments["printop"] or "verbose" in arguments[

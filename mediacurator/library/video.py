@@ -151,7 +151,8 @@ class Video():
                 extension="mkv",
                 verbose=False):
         '''
-        Converts the original file to the requested format / codec.
+        Converts the original file to the requested format / codec,
+        ensuring even width/height by adding a black pixel gap if necessary.
 
         Args:
             vcodec (str): The new video codec, supports av1 or x265.
@@ -164,58 +165,64 @@ class Video():
         '''
 
         # Setting new filename
+        base_filename, _ = os.path.splitext(self.filename_origin)
+
         if "mp4" in extension:
-            newfilename = self.filename_origin[:-4] + ".mp4"
-            if os.path.exists(self.path + newfilename):
-                newfilename = findfreename(self.path + newfilename)
-                if os.name == 'nt':
-                    newfilename = str(
-                        newfilename)[str(newfilename).rindex("\\") + 1:]
-                else:
-                    newfilename = str(
-                        newfilename)[str(newfilename).rindex("/") + 1:]
+            newfilename = base_filename + ".mp4"
         else:
-            newfilename = self.filename_origin[:-4] + ".mkv"
-            if os.path.exists(self.path + newfilename):
-                newfilename = findfreename(self.path + newfilename)
-                if os.name == 'nt':
-                    newfilename = str(
-                        newfilename)[str(newfilename).rindex("\\") + 1:]
-                else:
-                    newfilename = str(
-                        newfilename)[str(newfilename).rindex("/") + 1:]
+            newfilename = base_filename + ".mkv"
+
+        if os.path.exists(self.path + newfilename):
+            newfilename = findfreename(self.path + newfilename)
+            newfilename = os.path.basename(newfilename)
 
         self.filename_tmp = newfilename
 
-        # Setting ffmpeg
+        # Setting ffmpeg command
         args = [
             'ffmpeg', '-i', self.path + self.filename_origin, '-map', '0:v',
             '-map', '0:a?', '-map', '0:s?', '-map_metadata', '0'
         ]
 
-        # Conversion options
+        # Conversion options based on codec
         if vcodec == "av1":
             args += ['-c:v', 'libaom-av1']
             # Optionally, control quality with a crf value for AV1
             args += ['-crf', '30']
         elif vcodec == "x265" or vcodec == "hevc":
             args += ['-c:v', 'libx265']
-            # Add max_muxing_queue_size to avoid buffer overflows
-            args += ['-max_muxing_queue_size', '1000']
             # Control quality with crf for x265
             args += ['-preset', 'medium', '-crf', '28']
+            # Add max_muxing_queue_size to avoid buffer overflows
+            args += ['-max_muxing_queue_size', '1000']
 
-        # Add mapping for video, audio, and subtitle streams
+        # Check for odd width/height and adjust with padding
+        width_canvas = self.width
+        height_canvas = self.height
+        if self.width % 2 != 0:
+            width_canvas = self.width + 1
+
+        if self.height % 2 != 0:
+            height_canvas = self.height + 1
+
+        # Only add padding if needed
+        if self.width != width_canvas or self.height != height_canvas:
+            args += [
+                '-vf',
+                f"pad={width_canvas}:{height_canvas}:(ow-iw)/2:(oh-ih)/2:black"
+            ]
+
+        # Copy audio and subtitles without re-encoding
         args += ['-c:a', 'copy', '-c:s', 'copy']
 
-        # Conversion output
+        # Specify output file
         args += [self.path + self.filename_tmp]
 
         try:
             if verbose:
                 subprocess.call(args)
             else:
-                txt = subprocess.check_output(args, stderr=subprocess.STDOUT)
+                subprocess.check_output(args, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             deletefile(self.path + self.filename_tmp)
             self.filename_tmp = ""
