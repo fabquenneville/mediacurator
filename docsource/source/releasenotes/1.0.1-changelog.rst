@@ -11,7 +11,7 @@ Dropped Support
 Compatibility Notes
 ====================
 
-* Renamed 
+* **Renamed the project** from 'MediaCurator' to 'mediacurator' to standardize naming conventions (all lowercase).
 
 Python Support
 --------------
