@@ -2,7 +2,7 @@
 Use cases
 =========
 
-The main reasons to use MediaCurator would be the following:
+The main reasons to use mediacurator would be the following:
 
 * :ref:`list_cmd` on a video library such as:
     - How many videos of the lot are in HD vs standard or substandard definitions
