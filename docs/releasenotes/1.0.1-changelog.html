@@ -38,53 +38,109 @@
 <h1>mediacurator 1.0.1 Release Notes<a class="headerlink" href="#mediacurator-1-0-1-release-notes" title="Link to this heading">¶</a></h1>
 <section id="highlights">
 <h2>Highlights<a class="headerlink" href="#highlights" title="Link to this heading">¶</a></h2>
+<p>This release introduces a major overhaul of the command-line interface (CLI) for <cite>mediacurator</cite>, improving usability, maintainability, and flexibility. The CLI now utilizes Python’s <cite>argparse</cite> library for enhanced user interaction and support for a broader range of formats.</p>
 </section>
 <section id="dropped-support">
 <h2>Dropped Support<a class="headerlink" href="#dropped-support" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>The project has been <strong>renamed</strong> from ‘MediaCurator’ to ‘mediacurator’ to standardize naming conventions (all lowercase).</p></li>
+<li><p>The CLI API has undergone significant changes, resulting in a new command structure that is not compatible with the old format. The previous and new structures are as follows:</p></li>
+</ul>
+<p><strong>Before:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span><span class="o">[</span>list,convert<span class="o">]</span><span class="w"> </span><span class="o">[</span>-del<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-in:any,avi,mkv,wmv,mpg,mp4,m4v,flv,vid,divx,ogm,webm<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-filters:fferror,old,lowres,hd,720p,1080p,uhd,mpeg,mpeg4,x264,wmv3,wmv<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-out:mkv/mp4,x265/av1<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-print:list,formated,verbose<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-dirs/-files:<span class="s2">&quot;/mnt/media/&quot;</span>,,<span class="s2">&quot;/mnt/media2/&quot;</span><span class="o">]</span>
+</pre></div>
+</div>
+<p><strong>After:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w"> </span>convert<span class="o">]</span><span class="w"> </span><span class="o">[</span>-del/--delete<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-i/--inputs<span class="w"> </span>any<span class="w"> </span>3gp<span class="w"> </span>asf<span class="w"> </span>avi<span class="w"> </span>divx<span class="w"> </span>dv<span class="w"> </span>f4v<span class="w"> </span>flv<span class="w"> </span>gif<span class="w"> </span>m2ts<span class="w"> </span>m4v<span class="w"> </span>mkv<span class="w"> </span>mov<span class="w"> </span>mp4<span class="w"> </span>mpeg<span class="w"> </span>mpg<span class="w"> </span>mts<span class="w"> </span>ogm<span class="w"> </span>ogv<span class="w"> </span>rm<span class="w"> </span>swf<span class="w"> </span>ts<span class="w"> </span>vid<span class="w"> </span>vob<span class="w"> </span>webm<span class="w"> </span>wmv<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-fl/--filters<span class="w"> </span>fferror<span class="w"> </span>old<span class="w"> </span>lowres<span class="w"> </span>hd<span class="w"> </span>720p<span class="w"> </span>1080p<span class="w"> </span>uhd<span class="w"> </span>mpeg<span class="w"> </span>mpeg4<span class="w"> </span>x264<span class="w"> </span>wmv3<span class="w"> </span>wmv<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-o/--outputs<span class="w"> </span>mkv/mp4<span class="w"> </span>x265/av1<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-p/--printop<span class="w"> </span>list<span class="w"> </span>formatted<span class="w"> </span>verbose<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-d/--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span><span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-f/--files<span class="w"> </span><span class="s2">&quot;file1.ext&quot;</span><span class="w"> </span><span class="s2">&quot;file2.ext&quot;</span><span class="o">]</span>
+</pre></div>
+</div>
 </section>
 <section id="compatibility-notes">
 <h2>Compatibility Notes<a class="headerlink" href="#compatibility-notes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><strong>Renamed the project</strong> from ‘MediaCurator’ to ‘mediacurator’ to standardize naming conventions (all lowercase).</p></li>
+<li><p>This release includes breaking changes, necessitating the version bump from <strong>0.0.13</strong> to <strong>1.0.1</strong>.</p></li>
 </ul>
 <section id="python-support">
 <h3>Python Support<a class="headerlink" href="#python-support" title="Link to this heading">¶</a></h3>
-<p>mediacurator has been tested on Python 3.12.6.</p>
+<ul class="simple">
+<li><p><cite>mediacurator</cite> has been tested on Python 3.12.6.</p></li>
+</ul>
 </section>
 <section id="ffmpeg-support">
 <h3>FFMPEG Support<a class="headerlink" href="#ffmpeg-support" title="Link to this heading">¶</a></h3>
-<p>mediacurator has been tested to work with FFMPEG version 7.0.2.</p>
+<ul class="simple">
+<li><p><cite>mediacurator</cite> has been tested to work with FFMPEG version 7.0.2.</p></li>
+</ul>
 </section>
 <section id="os-support">
 <h3>OS Support<a class="headerlink" href="#os-support" title="Link to this heading">¶</a></h3>
-<p>mediacurator has been tested to work on various GNU/Linux distributions as well as Windows.</p>
+<ul class="simple">
+<li><p><cite>mediacurator</cite> has been tested to work on various GNU/Linux distributions as well as Windows.</p></li>
+</ul>
 </section>
 </section>
 <section id="new-features">
 <h2>New Features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Major CLI Overhaul</strong>: Refactored the command-line argument handling to use <cite>argparse</cite>, allowing structured command definitions, built-in help, validation, and error messages.</p></li>
+<li><dl class="simple">
+<dt><strong>Expanded Format Support</strong>:</dt><dd><ul>
+<li><dl class="simple">
+<dt><strong>Input Formats</strong>: Added support for a broader range of input formats, including:</dt><dd><ul>
+<li><p>From: <cite>avi, divx, flv, m4v, mkv, mp4, mpg, ogm, vid, webm, wmv</cite></p></li>
+<li><p>To: <cite>any, 3gp, asf, avi, divx, dv, f4v, flv, gif, m2ts, m4v, mkv, mov, mp4, mpeg, mpg, mts, ogm, ogv, rm, swf, ts, vid, vob, webm, wmv</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>CRF Settings</strong>: Introduced CRF (Constant Rate Factor) settings for AV1 and x265 to provide better control over quality and file size.</p></li>
+<li><p><strong>Even Dimensions Handling</strong>: Implemented handling for odd pixel dimensions by adding black pixel padding to ensure even width and height.</p></li>
+<li><p><strong>Improved Output</strong>: Added line breaks in conversion output before each video to enhance readability.</p></li>
+</ul>
 </section>
 <section id="improvements">
 <h2>Improvements<a class="headerlink" href="#improvements" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Added line break in conversion output before each video to improve readability.</p></li>
-<li><p>Standardized audio, subtitle and metadata copying.</p></li>
-<li><p>Added support for .mov and .ts formats.</p></li>
-<li><p>Introduced CRF (Constant Rate Factor) settings for AV1 and x265 for better control over quality and file size.</p></li>
-<li><p>Implemented handling for odd pixel dimensions by adding black pixel padding to ensure even width and height.</p></li>
+<li><p><strong>Standardized Metadata Handling</strong>: Standardized audio, subtitle, and metadata copying processes.</p></li>
+<li><p><strong>Enhanced Documentation</strong>: Revamped documentation for clarity and usability, ensuring all sections are consistent in formatting and structure.</p></li>
+<li><p><strong>Legacy Support</strong>: Maintained legacy commands in the updated documentation for backward compatibility.</p></li>
+<li><p><strong>Code Quality</strong>: Refactored redundant code sections and improved error handling for better user feedback.</p></li>
 </ul>
 </section>
 <section id="changes">
 <h2>Changes<a class="headerlink" href="#changes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Updated the README and documentation to reflect the new command-line interface and features.</p></li>
+<li><p>Removed outdated screenshots and images, and organized legacy images in the documentation.</p></li>
+</ul>
 </section>
 <section id="deprecations">
 <h2>Deprecations<a class="headerlink" href="#deprecations" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Deprecated legacy command options that are no longer compatible with the new CLI structure.</p></li>
+</ul>
 </section>
 <section id="future-changes">
 <h2>Future Changes<a class="headerlink" href="#future-changes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>More filters</p></li>
-<li><p>Test AV1 Support</p></li>
-<li><p>Prepare API for GUI</p></li>
+<li><p>Plan to add more filters for enhanced media management.</p></li>
+<li><p>Testing for AV1 support to ensure compatibility with new video codecs.</p></li>
+<li><p>Preparing the API for potential GUI development.</p></li>
 </ul>
 </section>
 </section>

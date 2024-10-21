@@ -4,51 +4,82 @@ mediacurator 1.0.1 Release Notes
 
 Highlights
 ==========
+This release introduces a major overhaul of the command-line interface (CLI) for `mediacurator`, improving usability, maintainability, and flexibility. The CLI now utilizes Python's `argparse` library for enhanced user interaction and support for a broader range of formats.
 
 Dropped Support
 ===============
+- The project has been **renamed** from 'MediaCurator' to 'mediacurator' to standardize naming conventions (all lowercase).
+- The CLI API has undergone significant changes, resulting in a new command structure that is not compatible with the old format. The previous and new structures are as follows:
+
+**Before:**
+
+.. code-block:: bash
+
+    mediacurator [list,convert] [-del]
+        [-in:any,avi,mkv,wmv,mpg,mp4,m4v,flv,vid,divx,ogm,webm]
+        [-filters:fferror,old,lowres,hd,720p,1080p,uhd,mpeg,mpeg4,x264,wmv3,wmv]
+        [-out:mkv/mp4,x265/av1]
+        [-print:list,formated,verbose]
+        [-dirs/-files:"/mnt/media/",,"/mnt/media2/"]
+
+
+**After:**
+
+.. code-block:: bash
+
+    mediacurator [list convert] [-del/--delete]
+        [-i/--inputs any 3gp asf avi divx dv f4v flv gif m2ts m4v mkv mov mp4 mpeg mpg mts ogm ogv rm swf ts vid vob webm wmv]
+        [-fl/--filters fferror old lowres hd 720p 1080p uhd mpeg mpeg4 x264 wmv3 wmv]
+        [-o/--outputs mkv/mp4 x265/av1]
+        [-p/--printop list formatted verbose]
+        [-d/--dirs "/mnt/media/" "/mnt/media2/"]
+        [-f/--files "file1.ext" "file2.ext"]
 
 Compatibility Notes
 ====================
-
-* **Renamed the project** from 'MediaCurator' to 'mediacurator' to standardize naming conventions (all lowercase).
+- This release includes breaking changes, necessitating the version bump from **0.0.13** to **1.0.1**.
 
 Python Support
 --------------
-
-mediacurator has been tested on Python 3.12.6.
+- `mediacurator` has been tested on Python 3.12.6.
 
 FFMPEG Support
 --------------
-
-mediacurator has been tested to work with FFMPEG version 7.0.2.
+- `mediacurator` has been tested to work with FFMPEG version 7.0.2.
 
 OS Support
 ----------
-
-mediacurator has been tested to work on various GNU/Linux distributions as well as Windows.
+- `mediacurator` has been tested to work on various GNU/Linux distributions as well as Windows.
 
 New Features
 ============
+- **Major CLI Overhaul**: Refactored the command-line argument handling to use `argparse`, allowing structured command definitions, built-in help, validation, and error messages.
+- **Expanded Format Support**: 
+    - **Input Formats**: Added support for a broader range of input formats, including:
+        - From: `avi, divx, flv, m4v, mkv, mp4, mpg, ogm, vid, webm, wmv`
+        - To: `any, 3gp, asf, avi, divx, dv, f4v, flv, gif, m2ts, m4v, mkv, mov, mp4, mpeg, mpg, mts, ogm, ogv, rm, swf, ts, vid, vob, webm, wmv`
+- **CRF Settings**: Introduced CRF (Constant Rate Factor) settings for AV1 and x265 to provide better control over quality and file size.
+- **Even Dimensions Handling**: Implemented handling for odd pixel dimensions by adding black pixel padding to ensure even width and height.
+- **Improved Output**: Added line breaks in conversion output before each video to enhance readability.
 
 Improvements
 ============
-
-* Added line break in conversion output before each video to improve readability.
-* Standardized audio, subtitle and metadata copying.
-* Added support for .mov and .ts formats.
-* Introduced CRF (Constant Rate Factor) settings for AV1 and x265 for better control over quality and file size.
-* Implemented handling for odd pixel dimensions by adding black pixel padding to ensure even width and height.
+- **Standardized Metadata Handling**: Standardized audio, subtitle, and metadata copying processes.
+- **Enhanced Documentation**: Revamped documentation for clarity and usability, ensuring all sections are consistent in formatting and structure.
+- **Legacy Support**: Maintained legacy commands in the updated documentation for backward compatibility.
+- **Code Quality**: Refactored redundant code sections and improved error handling for better user feedback.
 
 Changes
 =======
+- Updated the README and documentation to reflect the new command-line interface and features.
+- Removed outdated screenshots and images, and organized legacy images in the documentation.
 
 Deprecations
 ============
+- Deprecated legacy command options that are no longer compatible with the new CLI structure.
 
 Future Changes
 ==============
-
-* More filters
-* Test AV1 Support
-* Prepare API for GUI
+- Plan to add more filters for enhanced media management.
+- Testing for AV1 support to ensure compatibility with new video codecs.
+- Preparing the API for potential GUI development.
