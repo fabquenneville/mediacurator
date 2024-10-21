@@ -12,134 +12,183 @@ Synopsis
 
 .. code-block:: bash
 
-    mediacurator [list,convert] [-del]
-        [-in:any,avi,mkv,wmv,mpg,mp4,m4v,flv,vid,divx,ogm,webm]
-        [-filters:fferror,old,lowres,hd,720p,1080p,uhd,mpeg,mpeg4,x264,wmv3,wmv,vob]
-        [-out:mkv/mp4,x265/av1]
-        [-print:list,formated,verbose]
-        [-dirs/-files:"/mnt/media/",,"/mnt/media2/"]
+    mediacurator <command> [options]
 
+    mediacurator [list convert] [-del/--delete]
+        [-i/--inputs any 3gp asf avi divx dv f4v flv gif m2ts m4v mkv mov mp4 mpeg mpg mts ogm ogv rm swf ts vid vob webm wmv]
+        [-fl/--filters fferror old lowres hd 720p 1080p uhd mpeg mpeg4 x264 wmv3 wmv]
+        [-o/--outputs mkv/mp4 x265/av1]
+        [-p/--printop list formatted verbose]
+        [-d/--dirs "/mnt/media/" "/mnt/media2/"]
+        [-f/--files "file1.ext" "file2.ext"]
 
-**for multiple files or filenames use double comma separated values ",,"**
+**Available commands:**
+- `list`: List all videos with specified filters.
+- `convert`: Convert videos to specified formats.
 
-default options are:
+**Options:**
 
-.. code-block:: bash
+- `-del` or `--delete`: Delete found results after successful operations. **Use with caution**.
+- `-i <input>` or `--inputs <input>`: Specify input file formats (default: `any`).
+- `-fl <filter>` or `--filters <filter>`: Apply filters to the selection of videos.
+- `-o <output>` or `--outputs <output>`: Specify output formats (default: `mkv`, `x265`).
+- `-p <print_option>` or `--printop <print_option>`: Set print options (default: `list`).
+- `-f <file>` or `--files <file>`: Specify files to process.
+- `-d <directory>` or `--dirs <directory>`: Specify directories to process.
 
-    -in:any
-    -filters:
-    -out:mkv,x265
-    -print:list
+**For multiple files or filenames, use space-separated values ( ).**
+
+**Default options (if not specified):**
+
+- `-i/--inputs`: `any`
+- `-fl/--filters`: (none)
+- `-o/--outputs`: `mkv`, `x265`
+- `-p/--printop`: `list`
 
 Description
 -----------
 
-mediacurator is a Python command line tool to manage a media database.
+**mediacurator** is a Python command-line tool designed to manage a media database. It allows you to:
 
-* List all the video's and their information with or without filters
-* Batch find and repair/convert videos with encoding errors
-* Batch recode videos to more modern codecs (x265 / AV1) based on filters: extentions, codecs, resolutions ...
+- List all videos and their metadata, optionally filtered by specified criteria.
+- Batch find, repair, or convert videos with encoding errors.
+- Batch recode videos to modern codecs (e.g., x265, AV1) based on filters (e.g., container, codec, resolution).
 
 Options
 -------
 
 list
 ====
-Search and list videos filtered by the parameters passed by the user.
+    Search and list videos filtered by the user-provided parameters.
 
 convert
 =======
-Search and convert all videos filtered by the parameters passed by the user.
+    Search and convert all videos filtered by the user-provided parameters.
 
--del:
-=====
-Delete all original videos once selected operations have been done succefully.
+--delete
+========
+    Short form: `-del`
 
-See :doc:`warnings`
+    Deletes the original videos after successful completion of operations (e.g., conversion or listing). **Use with caution**.
 
--in:
-====
-[**any**,avi,mkv,wmv,mpg,mp4,m4v,flv,vid,divx,ogm]
+    See :doc:`warnings`
 
-Search all videos of the selected container **extensions** in the directories. By default it will include any file format.
+--inputs
+========
+    Short form: `-i`
 
--filters:
+    [**any**, 3gp, asf, avi, divx, dv, f4v, flv, gif, m2ts, m4v, mkv, mov, mp4, mpeg, mpg, mts, ogm, ogv, rm, swf, ts, vid, vob, webm, wmv]
+
+    Filters videos by file format (container extensions). The default is `any`, meaning all formats are included.
+
+--filters
 =========
-[fferror,old,lowres,hd,720p,1080p,uhd,mpeg,mpeg4,x264,wmv3,wmv]
+    Short form: `-fl`
 
-Filter the selected videos for parameters:
+    [fferror, old, lowres, hd, 720p, 1080p, uhd, mpeg, mpeg4, x264, wmv3, wmv]
 
-* fferror: Select all videos with encoding errors (See :doc:`errors`)
-* old: Select all videos using old codecs (Everything except hevc or av1)
-* hd: 720p, 1080p, uhd
-* lowres: Everything not hd
-* uhd: if width >= 2160 or height >= 2160
-* 1080p: if less than uhd and width >= 1440 or height >= 1080
-* 720p: if less than 1080p and width >= 1280 or height >= 720:
-* sd: if less than 720p and if height >= 480
-* subsd: Substandard definitions: Everything under 480p
-* mpeg,mpeg4,x264,wmv3,wmv,vob: Filter for videos encoded in the requested video codec
+    Filters videos based on specific criteria:
 
--out:
-=====
-[**mkv**/mp4,x265/av1]
+    - **fferror**: Select videos with encoding errors (see :doc:`errors`)
+    - **old**: Select videos using outdated codecs (anything except hevc or av1)
+    - **hd**: Select videos in HD (720p, 1080p, UHD)
+    - **lowres**: Select videos that are not in HD
+    - **uhd**: Select Ultra-HD videos (width or height >= 2160)
+    - **1080p**: Select Full-HD videos (1440 <= width < 2160 or 1080 <= height < 2160)
+    - **720p**: Select HD videos (1280 <= width < 1440 or 720 <= height < 1080)
+    - **sd**: Select standard-definition videos (480 <= height < 720)
+    - **subsd**: Select substandard-definition videos (height < 480)
+    - **mpeg, mpeg4, x264, wmv3, wmv, vob**: Filter by video codec
 
-Select the outputs for the video conversions
+--outputs
+=========
+    Short form: `-o`
 
-* mkv: (**Default**) Package the resulting video in a `Matroska <https://en.wikipedia.org/wiki/Matroska>`_ container.
-* mp4: Package the resulting video in a  container.
-* x265/hevc: (**Default**) Encode the video using the `x265 <https://en.wikipedia.org/wiki/X265>`_ compression format.
-* av1: Encode the video using the `AOMedia Video 1 <https://en.wikipedia.org/wiki/AV1>`_ compression format. This will be used as default once the developpers at FFmpeg move it out of `experimental <https://trac.ffmpeg.org/wiki/Encode/AV1>`_ .
+    [**mkv**/mp4, x265/av1]
 
--print:
-=======
-[**list**,formated,verbose]
+    Specifies the output format for video conversions:
 
-* list: (**Default**) Print the information about the videos on a single line
+    - **mkv**: (**Default**) Package the output video in a `Matroska <https://en.wikipedia.org/wiki/Matroska>`_ container.
+    - **mp4**: Package the output video in an MP4 container.
+    - **x265** or **hevc**: (**Default**) Encode the video using `x265 <https://en.wikipedia.org/wiki/X265>`_ (HEVC).
+    - **av1**: Encode the video using `AOMedia Video 1 <https://en.wikipedia.org/wiki/AV1>`_ (AV1).
 
-.. image:: ../_static/Screenshot-print_list-single.png
-    :width: 600
-    :alt: Deleting videos
+--printop
+=========
+    Short form: `-p`
 
-* formated: Print the information in an aerated format
+    [**list**, formatted, verbose]
 
-.. image:: ../_static/Screenshot-print_formated-single.png
-    :width: 400
-    :alt: Deleting videos
+    Specifies how the output should be displayed:
 
-* verbose: Print the FFmpeg output during the video conversions
+    - **list**: (**Default**) Prints video info in a concise, single-line format.
 
--dirs:
+    .. image:: ../_static/Screenshot-print_list-single.png
+        :width: 600
+        :alt: List videos (single-line output)
+
+    - **formatted**: Prints video info in a more readable format with line breaks.
+
+    .. image:: ../_static/Screenshot-print_formatted-single.png
+        :width: 400
+        :alt: List videos (formatted output)
+
+    - **verbose**: Prints the FFmpeg output during conversions.
+
+--dirs
 ======
-["/mnt/media/",,"/mnt/media2/"]
+    Short form: `-d`
 
-The directories to scan as a **double comma** separated values list.
+    ["/mnt/media/", "/mnt/media2/"]
 
+    Specifies directories to scan, separated by spaces.
 
--files:
+--files
 =======
-["/mnt/media/video.avi",,"/mnt/media2/video2.mp4"]
+    Short form: `-f`
 
-Specific videos to include as a **double comma** separated values list.
+    ["/mnt/media/video.avi", "/mnt/media2/video2.mp4"]
+
+    Specifies individual video files to process, separated by spaces.
 
 Examples
 --------
 
 .. code-block:: bash
 
-    # List all videos with old codec in formated format
-    mediacurator list -filters:old -print:formated -dirs:/mnt/media/ >> ../medlist.txt
-    # Convert all videos with the codec mpeg4 in a mp4 using the av1 video codec and the delete the originals
-    mediacurator convert -del -filters:mpeg4 -out:av1,mp4 -dirs:"/mnt/media/Movies/"
-    # Convert any video with avi or mpg extensions, print formated text including ffmpeg's output and then delete the originals
-    mediacurator convert -del -in:avi,mpg -print:formated,verbose -dirs:/mnt/media/
+    # This command lists all videos in the specified directories that use old codecs and
+    # formats the output.
+    mediacurator list --filters old --printop formatted --dirs "/mnt/media/" "/mnt/media2/"
+    
+    # This command converts all MPEG4 videos found in the specified directories to AV1 format
+    # in MP4 containers and deletes the originals.
+    mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/media/" "/mnt/media2/"
+    
+    # This command converts AVI or MPG videos, displays detailed output during conversion, and
+    # deletes originals.
+    mediacurator convert --delete --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
 
-More examples in :doc:`use_cases`
+For more examples, see :doc:`use_cases`
 
 See Also
 --------
 
-`FFmpeg <https://ffmpeg.org/>`_
+- `FFmpeg <https://ffmpeg.org/>`_
+
+Glossary
+--------
+
+- **Codec**: A program or device that compresses and decompresses digital media.
+- **Container**: A file format that holds video, audio, and metadata.
+- **UHD**: Ultra High Definition, refers to video resolutions of 3840x2160 pixels or higher.
+
+Error Handling
+--------------
+
+Common issues users might encounter include:
+
+- **Encoding Errors**: If videos have encoding errors, they can be filtered using the `--filters fferror` option.
+- **Unsupported Formats**: Ensure that input formats specified in `--inputs` are supported by mediacurator.
 
 Author
 ------

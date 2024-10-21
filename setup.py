@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="mediacurator",
-    version="0.0.13",
+    version="1.0.1",
     author="Fabrice Quenneville",
     author_email="fab@fabq.ca",
     url="https://github.com/fabquenneville/mediacurator",
@@ -25,8 +25,15 @@ setuptools.setup(
     classifiers=[
         "Topic :: Multimedia :: Video :: Conversion",
         "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: End Users/Desktop",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
         "Environment :: Console",
@@ -36,12 +43,12 @@ setuptools.setup(
     },
     keywords=[
         "codecs", "filters", "video", "x265", "av1", "media-database",
-        "python-command", "hevc"
+        "python-command", "hevc", "multimedia", "video-processing"
     ],
-    install_requires=["pathlib", "colorama"],
+    install_requires=["pathlib", "colorama", "argcomplete"],
     license='GPL-3.0',
+    license_files=('LICENSE', ),
     python_requires='>=3.6',
-    test_suite='nose.collector',
-    tests_require=['nose'],
+    platforms='any',
     zip_safe=True,
 )

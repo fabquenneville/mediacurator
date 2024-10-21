@@ -145,6 +145,21 @@ class Video():
 
         return text
 
+    def print_details(self, formatted=False):
+        '''Prints the video details, checking for errors and formatting.
+
+        Args:
+            formatted (bool): Whether to print in a formatted or unformatted style.
+        '''
+        if self.error:
+            # Print error details in red if the video has an error
+            output = f"{cred}{self.fprint() if formatted else self}{creset}"
+        else:
+            # Print regular video details
+            output = self.fprint() if formatted else str(self)
+
+        print(output)
+
     def convert(self,
                 vcodec="x265",
                 acodec=False,

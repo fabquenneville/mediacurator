@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Warnings &#8212; mediacurator  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d9b65b63" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="mediacurator 1.0.1 Release Notes" href="../releasenotes/1.0.1-changelog.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="warnings">
+<h1>Warnings<a class="headerlink" href="#warnings" title="Link to this heading">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The following documentation is for versions prior to 1.0.1. It may contain features and usage instructions that are incompatible with the current version of mediacurator.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before using the <strong>delete feature</strong>, we strongly recommend running several dry runs to get acquainted with <cite>mediacurator</cite>, as incorrect usage can cause irreversible damage to your media library.</p>
+</div>
+<p>The <cite>-del</cite> flag will <strong>permanently delete</strong> files, so it is crucial to ensure that the command is executed correctly. Below are some examples of how the delete feature works.</p>
+<section id="example-use-cases-for-the-del-flag">
+<h2>Example use Cases for the <cite>-del</cite> Flag<a class="headerlink" href="#example-use-cases-for-the-del-flag" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Delete all non-HD (low-resolution) videos in a folder:</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>list<span class="w"> </span>-del<span class="w"> </span>-filters:lowres<span class="w">  </span>-dirs:<span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Delete all substandard quality videos in a folder:</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>list<span class="w"> </span>-del<span class="w"> </span>-filters:subsd<span class="w">  </span>-dirs:<span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Legacy-Screenshot-delete.png"><img alt="Deleting videos" src="../_images/Legacy-Screenshot-delete.png" style="width: 600px;" />
+</a>
+<ol class="arabic simple" start="3">
+<li><p><strong>Delete all videos in a folder with encoding errors:</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>list<span class="w"> </span>-del<span class="w"> </span>-filters:fferror<span class="w">  </span>-dirs:<span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Convert (repair) and then delete all videos in a folder with encoding errors:</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>convert<span class="w"> </span>-del<span class="w"> </span>-filters:fferror<span class="w">  </span>-dirs:<span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p><strong>Delete all videos in a folder:</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>list<span class="w"> </span>-del<span class="w"> </span>-filters:lowres<span class="w">  </span>-dirs:<span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Irreversibility</strong>: All of these commands involve permanent deletion. Once a file is deleted using the <cite>-del</cite> flag, it cannot be recovered.</p></li>
+<li><p><strong>Run without `-del` first</strong>: Always perform several dry runs by omitting the <cite>-del</cite> flag to ensure that the correct files are selected for deletion. Familiarizing yourself with the tool before using destructive commands is essential to avoid unintended consequences.</p></li>
+<li><p><strong>Specific File Selection</strong>: If you’re unsure about applying filters to an entire directory, you can use the <cite>-files</cite> option to target individual files for deletion or conversion, further reducing the risk of unintended deletions.</p></li>
+<li><p><strong>Backup Recommendation</strong>: Before running any commands with the <cite>-del</cite> flag, it is a good practice to back up your media library or the specific directories being processed, especially if they contain valuable or irreplaceable files.</p></li>
+</ul>
+</section>
+<section id="dry-run-example-without-deletion">
+<h2>Dry run example (without deletion)<a class="headerlink" href="#dry-run-example-without-deletion" title="Link to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>list<span class="w"> </span>-filters:lowres<span class="w"> </span>-dirs:<span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+<p>Make sure you carefully verify the output and files selected during the dry runs to prevent accidental data loss.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/mclogo4x.png" alt="Logo of mediacurator"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">mediacurator</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/warnings.html">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/use_cases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/errors.html">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Usage:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use_cases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Release Notes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.13-changelog.html">MediaCurator 0.0.13 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.12-changelog.html">MediaCurator 0.0.12 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.11-changelog.html">MediaCurator 0.0.11 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.10-changelog.html">MediaCurator 0.0.10 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.9-changelog.html">MediaCurator 0.0.9 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.8-changelog.html">MediaCurator 0.0.8 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.7-changelog.html">MediaCurator 0.0.7 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.6-changelog.html">MediaCurator 0.0.6 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.5-changelog.html">MediaCurator 0.0.5 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.4-changelog.html">MediaCurator 0.0.4 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.1-changelog.html">MediaCurator 0.0.1 Release Notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../releasenotes/1.0.1-changelog.html" title="previous chapter">mediacurator 1.0.1 Release Notes</a></li>
+      <li>Next: <a href="installation.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2020, Fabrice Quenneville.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/legacy_usage/warnings.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -8,7 +8,7 @@
     <title>Manual &#8212; mediacurator  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=bc254afd" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d9b65b63" />
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -42,123 +42,188 @@
 </section>
 <section id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span><span class="o">[</span>list,convert<span class="o">]</span><span class="w"> </span><span class="o">[</span>-del<span class="o">]</span>
-<span class="w">    </span><span class="o">[</span>-in:any,avi,mkv,wmv,mpg,mp4,m4v,flv,vid,divx,ogm,webm<span class="o">]</span>
-<span class="w">    </span><span class="o">[</span>-filters:fferror,old,lowres,hd,720p,1080p,uhd,mpeg,mpeg4,x264,wmv3,wmv,vob<span class="o">]</span>
-<span class="w">    </span><span class="o">[</span>-out:mkv/mp4,x265/av1<span class="o">]</span>
-<span class="w">    </span><span class="o">[</span>-print:list,formated,verbose<span class="o">]</span>
-<span class="w">    </span><span class="o">[</span>-dirs/-files:<span class="s2">&quot;/mnt/media/&quot;</span>,,<span class="s2">&quot;/mnt/media2/&quot;</span><span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+
+mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w"> </span>convert<span class="o">]</span><span class="w"> </span><span class="o">[</span>-del/--delete<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-i/--inputs<span class="w"> </span>any<span class="w"> </span>3gp<span class="w"> </span>asf<span class="w"> </span>avi<span class="w"> </span>divx<span class="w"> </span>dv<span class="w"> </span>f4v<span class="w"> </span>flv<span class="w"> </span>gif<span class="w"> </span>m2ts<span class="w"> </span>m4v<span class="w"> </span>mkv<span class="w"> </span>mov<span class="w"> </span>mp4<span class="w"> </span>mpeg<span class="w"> </span>mpg<span class="w"> </span>mts<span class="w"> </span>ogm<span class="w"> </span>ogv<span class="w"> </span>rm<span class="w"> </span>swf<span class="w"> </span>ts<span class="w"> </span>vid<span class="w"> </span>vob<span class="w"> </span>webm<span class="w"> </span>wmv<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-fl/--filters<span class="w"> </span>fferror<span class="w"> </span>old<span class="w"> </span>lowres<span class="w"> </span>hd<span class="w"> </span>720p<span class="w"> </span>1080p<span class="w"> </span>uhd<span class="w"> </span>mpeg<span class="w"> </span>mpeg4<span class="w"> </span>x264<span class="w"> </span>wmv3<span class="w"> </span>wmv<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-o/--outputs<span class="w"> </span>mkv/mp4<span class="w"> </span>x265/av1<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-p/--printop<span class="w"> </span>list<span class="w"> </span>formatted<span class="w"> </span>verbose<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-d/--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span><span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>-f/--files<span class="w"> </span><span class="s2">&quot;file1.ext&quot;</span><span class="w"> </span><span class="s2">&quot;file2.ext&quot;</span><span class="o">]</span>
 </pre></div>
 </div>
-<p><strong>for multiple files or filenames use double comma separated values “,,”</strong></p>
-<p>default options are:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-in:any
--filters:
--out:mkv,x265
--print:list
-</pre></div>
-</div>
+<p><strong>Available commands:</strong>
+- <cite>list</cite>: List all videos with specified filters.
+- <cite>convert</cite>: Convert videos to specified formats.</p>
+<p><strong>Options:</strong></p>
+<ul class="simple">
+<li><p><cite>-del</cite> or <cite>–delete</cite>: Delete found results after successful operations. <strong>Use with caution</strong>.</p></li>
+<li><p><cite>-i &lt;input&gt;</cite> or <cite>–inputs &lt;input&gt;</cite>: Specify input file formats (default: <cite>any</cite>).</p></li>
+<li><p><cite>-fl &lt;filter&gt;</cite> or <cite>–filters &lt;filter&gt;</cite>: Apply filters to the selection of videos.</p></li>
+<li><p><cite>-o &lt;output&gt;</cite> or <cite>–outputs &lt;output&gt;</cite>: Specify output formats (default: <cite>mkv</cite>, <cite>x265</cite>).</p></li>
+<li><p><cite>-p &lt;print_option&gt;</cite> or <cite>–printop &lt;print_option&gt;</cite>: Set print options (default: <cite>list</cite>).</p></li>
+<li><p><cite>-f &lt;file&gt;</cite> or <cite>–files &lt;file&gt;</cite>: Specify files to process.</p></li>
+<li><p><cite>-d &lt;directory&gt;</cite> or <cite>–dirs &lt;directory&gt;</cite>: Specify directories to process.</p></li>
+</ul>
+<p><strong>For multiple files or filenames, use space-separated values ( ).</strong></p>
+<p><strong>Default options (if not specified):</strong></p>
+<ul class="simple">
+<li><p><cite>-i/–inputs</cite>: <cite>any</cite></p></li>
+<li><p><cite>-fl/–filters</cite>: (none)</p></li>
+<li><p><cite>-o/–outputs</cite>: <cite>mkv</cite>, <cite>x265</cite></p></li>
+<li><p><cite>-p/–printop</cite>: <cite>list</cite></p></li>
+</ul>
 </section>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
-<p>mediacurator is a Python command line tool to manage a media database.</p>
+<p><strong>mediacurator</strong> is a Python command-line tool designed to manage a media database. It allows you to:</p>
 <ul class="simple">
-<li><p>List all the video’s and their information with or without filters</p></li>
-<li><p>Batch find and repair/convert videos with encoding errors</p></li>
-<li><p>Batch recode videos to more modern codecs (x265 / AV1) based on filters: extentions, codecs, resolutions …</p></li>
+<li><p>List all videos and their metadata, optionally filtered by specified criteria.</p></li>
+<li><p>Batch find, repair, or convert videos with encoding errors.</p></li>
+<li><p>Batch recode videos to modern codecs (e.g., x265, AV1) based on filters (e.g., container, codec, resolution).</p></li>
 </ul>
 </section>
 <section id="options">
 <h2>Options<a class="headerlink" href="#options" title="Link to this heading">¶</a></h2>
 <section id="list">
 <h3>list<a class="headerlink" href="#list" title="Link to this heading">¶</a></h3>
-<p>Search and list videos filtered by the parameters passed by the user.</p>
+<blockquote>
+<div><p>Search and list videos filtered by the user-provided parameters.</p>
+</div></blockquote>
 </section>
 <section id="convert">
 <h3>convert<a class="headerlink" href="#convert" title="Link to this heading">¶</a></h3>
-<p>Search and convert all videos filtered by the parameters passed by the user.</p>
+<blockquote>
+<div><p>Search and convert all videos filtered by the user-provided parameters.</p>
+</div></blockquote>
 </section>
-<section id="del">
-<h3>-del:<a class="headerlink" href="#del" title="Link to this heading">¶</a></h3>
-<p>Delete all original videos once selected operations have been done succefully.</p>
+<section id="delete">
+<h3>–delete<a class="headerlink" href="#delete" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-del</cite></p>
+<p>Deletes the original videos after successful completion of operations (e.g., conversion or listing). <strong>Use with caution</strong>.</p>
 <p>See <a class="reference internal" href="warnings.html"><span class="doc">Warnings</span></a></p>
+</div></blockquote>
 </section>
-<section id="in">
-<h3>-in:<a class="headerlink" href="#in" title="Link to this heading">¶</a></h3>
-<p>[<strong>any</strong>,avi,mkv,wmv,mpg,mp4,m4v,flv,vid,divx,ogm]</p>
-<p>Search all videos of the selected container <strong>extensions</strong> in the directories. By default it will include any file format.</p>
+<section id="inputs">
+<h3>–inputs<a class="headerlink" href="#inputs" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-i</cite></p>
+<p>[<strong>any</strong>, 3gp, asf, avi, divx, dv, f4v, flv, gif, m2ts, m4v, mkv, mov, mp4, mpeg, mpg, mts, ogm, ogv, rm, swf, ts, vid, vob, webm, wmv]</p>
+<p>Filters videos by file format (container extensions). The default is <cite>any</cite>, meaning all formats are included.</p>
+</div></blockquote>
 </section>
 <section id="filters">
-<h3>-filters:<a class="headerlink" href="#filters" title="Link to this heading">¶</a></h3>
-<p>[fferror,old,lowres,hd,720p,1080p,uhd,mpeg,mpeg4,x264,wmv3,wmv]</p>
-<p>Filter the selected videos for parameters:</p>
+<h3>–filters<a class="headerlink" href="#filters" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-fl</cite></p>
+<p>[fferror, old, lowres, hd, 720p, 1080p, uhd, mpeg, mpeg4, x264, wmv3, wmv]</p>
+<p>Filters videos based on specific criteria:</p>
 <ul class="simple">
-<li><p>fferror: Select all videos with encoding errors (See <a class="reference internal" href="errors.html"><span class="doc">Errors</span></a>)</p></li>
-<li><p>old: Select all videos using old codecs (Everything except hevc or av1)</p></li>
-<li><p>hd: 720p, 1080p, uhd</p></li>
-<li><p>lowres: Everything not hd</p></li>
-<li><p>uhd: if width &gt;= 2160 or height &gt;= 2160</p></li>
-<li><p>1080p: if less than uhd and width &gt;= 1440 or height &gt;= 1080</p></li>
-<li><p>720p: if less than 1080p and width &gt;= 1280 or height &gt;= 720:</p></li>
-<li><p>sd: if less than 720p and if height &gt;= 480</p></li>
-<li><p>subsd: Substandard definitions: Everything under 480p</p></li>
-<li><p>mpeg,mpeg4,x264,wmv3,wmv,vob: Filter for videos encoded in the requested video codec</p></li>
+<li><p><strong>fferror</strong>: Select videos with encoding errors (see <a class="reference internal" href="errors.html"><span class="doc">Errors</span></a>)</p></li>
+<li><p><strong>old</strong>: Select videos using outdated codecs (anything except hevc or av1)</p></li>
+<li><p><strong>hd</strong>: Select videos in HD (720p, 1080p, UHD)</p></li>
+<li><p><strong>lowres</strong>: Select videos that are not in HD</p></li>
+<li><p><strong>uhd</strong>: Select Ultra-HD videos (width or height &gt;= 2160)</p></li>
+<li><p><strong>1080p</strong>: Select Full-HD videos (1440 &lt;= width &lt; 2160 or 1080 &lt;= height &lt; 2160)</p></li>
+<li><p><strong>720p</strong>: Select HD videos (1280 &lt;= width &lt; 1440 or 720 &lt;= height &lt; 1080)</p></li>
+<li><p><strong>sd</strong>: Select standard-definition videos (480 &lt;= height &lt; 720)</p></li>
+<li><p><strong>subsd</strong>: Select substandard-definition videos (height &lt; 480)</p></li>
+<li><p><strong>mpeg, mpeg4, x264, wmv3, wmv, vob</strong>: Filter by video codec</p></li>
 </ul>
+</div></blockquote>
 </section>
-<section id="out">
-<h3>-out:<a class="headerlink" href="#out" title="Link to this heading">¶</a></h3>
-<p>[<strong>mkv</strong>/mp4,x265/av1]</p>
-<p>Select the outputs for the video conversions</p>
+<section id="outputs">
+<h3>–outputs<a class="headerlink" href="#outputs" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-o</cite></p>
+<p>[<strong>mkv</strong>/mp4, x265/av1]</p>
+<p>Specifies the output format for video conversions:</p>
 <ul class="simple">
-<li><p>mkv: (<strong>Default</strong>) Package the resulting video in a <a class="reference external" href="https://en.wikipedia.org/wiki/Matroska">Matroska</a> container.</p></li>
-<li><p>mp4: Package the resulting video in a  container.</p></li>
-<li><p>x265/hevc: (<strong>Default</strong>) Encode the video using the <a class="reference external" href="https://en.wikipedia.org/wiki/X265">x265</a> compression format.</p></li>
-<li><p>av1: Encode the video using the <a class="reference external" href="https://en.wikipedia.org/wiki/AV1">AOMedia Video 1</a> compression format. This will be used as default once the developpers at FFmpeg move it out of <a class="reference external" href="https://trac.ffmpeg.org/wiki/Encode/AV1">experimental</a> .</p></li>
+<li><p><strong>mkv</strong>: (<strong>Default</strong>) Package the output video in a <a class="reference external" href="https://en.wikipedia.org/wiki/Matroska">Matroska</a> container.</p></li>
+<li><p><strong>mp4</strong>: Package the output video in an MP4 container.</p></li>
+<li><p><strong>x265</strong> or <strong>hevc</strong>: (<strong>Default</strong>) Encode the video using <a class="reference external" href="https://en.wikipedia.org/wiki/X265">x265</a> (HEVC).</p></li>
+<li><p><strong>av1</strong>: Encode the video using <a class="reference external" href="https://en.wikipedia.org/wiki/AV1">AOMedia Video 1</a> (AV1).</p></li>
 </ul>
+</div></blockquote>
 </section>
-<section id="print">
-<h3>-print:<a class="headerlink" href="#print" title="Link to this heading">¶</a></h3>
-<p>[<strong>list</strong>,formated,verbose]</p>
+<section id="printop">
+<h3>–printop<a class="headerlink" href="#printop" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-p</cite></p>
+<p>[<strong>list</strong>, formatted, verbose]</p>
+<p>Specifies how the output should be displayed:</p>
 <ul class="simple">
-<li><p>list: (<strong>Default</strong>) Print the information about the videos on a single line</p></li>
+<li><p><strong>list</strong>: (<strong>Default</strong>) Prints video info in a concise, single-line format.</p></li>
 </ul>
-<a class="reference internal image-reference" href="../_images/Screenshot-print_list-single.png"><img alt="Deleting videos" src="../_images/Screenshot-print_list-single.png" style="width: 600px;" />
+<a class="reference internal image-reference" href="../_images/Screenshot-print_list-single.png"><img alt="List videos (single-line output)" src="../_images/Screenshot-print_list-single.png" style="width: 600px;" />
 </a>
 <ul class="simple">
-<li><p>formated: Print the information in an aerated format</p></li>
+<li><p><strong>formatted</strong>: Prints video info in a more readable format with line breaks.</p></li>
 </ul>
-<a class="reference internal image-reference" href="../_images/Screenshot-print_formated-single.png"><img alt="Deleting videos" src="../_images/Screenshot-print_formated-single.png" style="width: 400px;" />
+<a class="reference internal image-reference" href="../_images/Screenshot-print_formatted-single.png"><img alt="List videos (formatted output)" src="../_images/Screenshot-print_formatted-single.png" style="width: 400px;" />
 </a>
 <ul class="simple">
-<li><p>verbose: Print the FFmpeg output during the video conversions</p></li>
+<li><p><strong>verbose</strong>: Prints the FFmpeg output during conversions.</p></li>
 </ul>
+</div></blockquote>
 </section>
 <section id="dirs">
-<h3>-dirs:<a class="headerlink" href="#dirs" title="Link to this heading">¶</a></h3>
-<p>[“/mnt/media/”,,”/mnt/media2/”]</p>
-<p>The directories to scan as a <strong>double comma</strong> separated values list.</p>
+<h3>–dirs<a class="headerlink" href="#dirs" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-d</cite></p>
+<p>[“/mnt/media/”, “/mnt/media2/”]</p>
+<p>Specifies directories to scan, separated by spaces.</p>
+</div></blockquote>
 </section>
 <section id="files">
-<h3>-files:<a class="headerlink" href="#files" title="Link to this heading">¶</a></h3>
-<p>[“/mnt/media/video.avi”,,”/mnt/media2/video2.mp4”]</p>
-<p>Specific videos to include as a <strong>double comma</strong> separated values list.</p>
+<h3>–files<a class="headerlink" href="#files" title="Link to this heading">¶</a></h3>
+<blockquote>
+<div><p>Short form: <cite>-f</cite></p>
+<p>[“/mnt/media/video.avi”, “/mnt/media2/video2.mp4”]</p>
+<p>Specifies individual video files to process, separated by spaces.</p>
+</div></blockquote>
 </section>
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all videos with old codec in formated format</span>
-mediacurator<span class="w"> </span>list<span class="w"> </span>-filters:old<span class="w"> </span>-print:formated<span class="w"> </span>-dirs:/mnt/media/<span class="w"> </span>&gt;&gt;<span class="w"> </span>../medlist.txt
-<span class="c1"># Convert all videos with the codec mpeg4 in a mp4 using the av1 video codec and the delete the originals</span>
-mediacurator<span class="w"> </span>convert<span class="w"> </span>-del<span class="w"> </span>-filters:mpeg4<span class="w"> </span>-out:av1,mp4<span class="w"> </span>-dirs:<span class="s2">&quot;/mnt/media/Movies/&quot;</span>
-<span class="c1"># Convert any video with avi or mpg extensions, print formated text including ffmpeg&#39;s output and then delete the originals</span>
-mediacurator<span class="w"> </span>convert<span class="w"> </span>-del<span class="w"> </span>-in:avi,mpg<span class="w"> </span>-print:formated,verbose<span class="w"> </span>-dirs:/mnt/media/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># This command lists all videos in the specified directories that use old codecs and</span>
+<span class="c1"># formats the output.</span>
+mediacurator<span class="w"> </span>list<span class="w"> </span>--filters<span class="w"> </span>old<span class="w"> </span>--printop<span class="w"> </span>formatted<span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span>
+
+<span class="c1"># This command converts all MPEG4 videos found in the specified directories to AV1 format</span>
+<span class="c1"># in MP4 containers and deletes the originals.</span>
+mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span class="w"> </span>--filters<span class="w"> </span>mpeg4<span class="w"> </span>--outputs<span class="w"> </span>av1<span class="w"> </span>mp4<span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span>
+
+<span class="c1"># This command converts AVI or MPG videos, displays detailed output during conversion, and</span>
+<span class="c1"># deletes originals.</span>
+mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span class="w"> </span>--inputs<span class="w"> </span>avi<span class="w"> </span>mpg<span class="w"> </span>--printop<span class="w"> </span>formatted<span class="w"> </span>verbose<span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span>
 </pre></div>
 </div>
-<p>More examples in <a class="reference internal" href="use_cases.html"><span class="doc">Use cases</span></a></p>
+<p>For more examples, see <a class="reference internal" href="use_cases.html"><span class="doc">Use cases</span></a></p>
 </section>
 <section id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://ffmpeg.org/">FFmpeg</a></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://ffmpeg.org/">FFmpeg</a></p></li>
+</ul>
+</section>
+<section id="glossary">
+<h2>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Codec</strong>: A program or device that compresses and decompresses digital media.</p></li>
+<li><p><strong>Container</strong>: A file format that holds video, audio, and metadata.</p></li>
+<li><p><strong>UHD</strong>: Ultra High Definition, refers to video resolutions of 3840x2160 pixels or higher.</p></li>
+</ul>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">¶</a></h2>
+<p>Common issues users might encounter include:</p>
+<ul class="simple">
+<li><p><strong>Encoding Errors</strong>: If videos have encoding errors, they can be filtered using the <cite>–filters fferror</cite> option.</p></li>
+<li><p><strong>Unsupported Formats</strong>: Ensure that input formats specified in <cite>–inputs</cite> are supported by mediacurator.</p></li>
+</ul>
 </section>
 <section id="author">
 <h2>Author<a class="headerlink" href="#author" title="Link to this heading">¶</a></h2>
@@ -198,6 +263,8 @@ mediacurator<span class="w"> </span>convert<span class="w"> </span>-del<span cla
 <li class="toctree-l2"><a class="reference internal" href="#options">Options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#glossary">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#author">Author</a></li>
 </ul>
 </li>
@@ -207,6 +274,18 @@ mediacurator<span class="w"> </span>convert<span class="w"> </span>-del<span cla
 <p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/warnings.html">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/use_cases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/errors.html">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Release Notes:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.13-changelog.html">MediaCurator 0.0.13 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.12-changelog.html">MediaCurator 0.0.12 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.11-changelog.html">MediaCurator 0.0.11 Release Notes</a></li>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Errors &#8212; mediacurator  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d9b65b63" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MediaCurator 0.0.13 Release Notes" href="../releasenotes/0.0.13-changelog.html" />
+    <link rel="prev" title="Use cases" href="use_cases.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="errors">
+<h1>Errors<a class="headerlink" href="#errors" title="Link to this heading">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The following documentation is for versions prior to 1.0.1. It may contain features and usage instructions that are incompatible with the current version of mediacurator.</p>
+</div>
+<p>FFmpeg can detect quite a few errors in the encoding of your source video’s encoding and can also be used to repair these errors.</p>
+<section id="repairable-encoding-errors">
+<h2>Repairable Encoding Errors<a class="headerlink" href="#repairable-encoding-errors" title="Link to this heading">¶</a></h2>
+<p>Here are some example errors that mediacurator will print and can possibly repair by re-encoding:</p>
+<ul class="simple">
+<li><p><strong>“Referenced QT chapter track not found”</strong>: Indicates that the video references a chapter that doesn’t exist.</p></li>
+<li><p><strong>“Error, header damaged or not MPEG-4 header”</strong>: The file’s header is corrupted or missing.</p></li>
+<li><p><strong>“Header missing”</strong>: The file lacks the necessary header information for decoding.</p></li>
+<li><p><strong>“SEI type”</strong>: Issues related to SEI (Supplemental Enhancement Information) data.</p></li>
+<li><p><strong>“no frame!”</strong>: No video frames available for processing.</p></li>
+<li><p><strong>“Error while decoding MPEG audio frame.”</strong>: Issues decoding the audio stream.</p></li>
+<li><p><strong>“big_values too big”</strong>: Indicates that certain values in the file are larger than expected.</p></li>
+<li><p>…</p></li>
+</ul>
+</section>
+<section id="ffmpeg-issues">
+<h2>FFmpeg Issues<a class="headerlink" href="#ffmpeg-issues" title="Link to this heading">¶</a></h2>
+<p>While using FFmpeg, you may encounter other errors (such as segfaults) depending on your version. Mediacurator will also print information when that occurs and will move on to the next video after cleaning up any failures.</p>
+<p>If you experience these errors, consider the following steps:</p>
+<ul class="simple">
+<li><p><strong>Update FFmpeg</strong>: Ensure you are using the latest version by downloading it from <a class="reference external" href="https://ffmpeg.org/download.html">ffmpeg.org</a>, as many distributions provide outdated versions in their repositories.</p></li>
+<li><p><strong>Run with Verbose Option</strong>: Execute mediacurator with the verbose print option, which will display the raw FFmpeg output for better troubleshooting.</p></li>
+<li><p><strong>Retry</strong>: In my experience, some errors do not necessarily recur…</p></li>
+</ul>
+</section>
+<section id="other-bugs">
+<h2>Other Bugs<a class="headerlink" href="#other-bugs" title="Link to this heading">¶</a></h2>
+<p>If you encounter other bugs, issues, or would like to suggest features, feel free to open a bug report on <a class="reference external" href="https://github.com/fabquenneville/mediacurator/issues">GitHub</a>.</p>
+<p>For further assistance, you can reach out through the GitHub repository or the project’s support channels.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/mclogo4x.png" alt="Logo of mediacurator"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">mediacurator</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/warnings.html">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/use_cases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/errors.html">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Usage:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="warnings.html">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use_cases.html">Use cases</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Release Notes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.13-changelog.html">MediaCurator 0.0.13 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.12-changelog.html">MediaCurator 0.0.12 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.11-changelog.html">MediaCurator 0.0.11 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.10-changelog.html">MediaCurator 0.0.10 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.9-changelog.html">MediaCurator 0.0.9 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.8-changelog.html">MediaCurator 0.0.8 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.7-changelog.html">MediaCurator 0.0.7 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.6-changelog.html">MediaCurator 0.0.6 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.5-changelog.html">MediaCurator 0.0.5 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.4-changelog.html">MediaCurator 0.0.4 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/0.0.1-changelog.html">MediaCurator 0.0.1 Release Notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="use_cases.html" title="previous chapter">Use cases</a></li>
+      <li>Next: <a href="../releasenotes/0.0.13-changelog.html" title="next chapter">MediaCurator 0.0.13 Release Notes</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2020, Fabrice Quenneville.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/legacy_usage/errors.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

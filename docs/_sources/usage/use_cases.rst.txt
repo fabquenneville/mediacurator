@@ -17,18 +17,17 @@ The main reasons to use mediacurator would be the following:
 Print information
 -----------------
 
-List all videos with old codec in formated format
+List all videos with old codec in formatted output
 
 .. code-block:: bash
 
-    mediacurator list -filters:old -dirs:/mnt/media/
+    mediacurator list --filters old --printop formatted --dirs "/mnt/media/" "/mnt/media2/"
 
-List all videos with substandard definitions with a formated output
+List all videos with substandard definitions with a formatted output
 
 .. code-block:: bash
 
-    mediacurator list -filters:subsd -print:formated -dirs:/mnt/media/
-
+    mediacurator list --filters subsd --printop formatted --dirs "/mnt/media/" "/mnt/media2/"
 
 .. _purge:
 
@@ -41,21 +40,19 @@ List and delete all videos using the `Windows Media Video <https://en.wikipedia.
 
 .. code-block:: bash
 
-    mediacurator list -del -filters:wmv -dirs:/mnt/media/
+    mediacurator list --delete --filters wmv --dirs "/mnt/media/" "/mnt/media2/"
 
-List and delete all videos using an `Audio Video Interleave <https://en.wikipedia.org/wiki/Audio_Video_Interleave>`_
+List and delete all videos using `Audio Video Interleave <https://en.wikipedia.org/wiki/Audio_Video_Interleave>`_
 
 .. code-block:: bash
 
-    mediacurator list -del -in:avi -dirs:/mnt/media/
+    mediacurator list --delete --inputs avi --dirs "/mnt/media/" "/mnt/media2/"
 
 List and delete any videos with encoding errors
 
 .. code-block:: bash
 
-    mediacurator list -del -filters:fferror -dirs:/mnt/media/
-
-
+    mediacurator list --delete --filters fferror --dirs "/mnt/media/" "/mnt/media2/"
 
 .. _fferror:
 
@@ -66,20 +63,19 @@ List all videos with encoding errors
 
 .. code-block:: bash
 
-    mediacurator list -filters:fferror -dirs:/mnt/media/
+    mediacurator list --filters fferror --dirs "/mnt/media/" "/mnt/media2/"
 
 List and delete any videos with encoding errors
 
 .. code-block:: bash
 
-    mediacurator list -del -filters:fferror -dirs:/mnt/media/
+    mediacurator list --delete --filters fferror --dirs "/mnt/media/" "/mnt/media2/"
     
-Convert all videos with encoding errors to `High Efficiency Video Coding <https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding>`_ and the delete the originals
+Convert all videos with encoding errors to `High Efficiency Video Coding <https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding>`_ and delete the originals
 
 .. code-block:: bash
 
-    mediacurator convert -del -filters:fferror -dirs:"/mnt/media/Movies/"
-
+    mediacurator convert --delete --filters fferror --dirs "/mnt/media/" "/mnt/media2/"
 
 .. _convert:
 
@@ -90,16 +86,16 @@ Convert all videos with old codecs to `High Efficiency Video Coding <https://en.
 
 .. code-block:: bash
 
-    mediacurator convert -del -filters:old -dirs:"/mnt/media/Movies/"
+    mediacurator convert --delete --filters old --dirs "/mnt/media/" "/mnt/media2/"
     
 Convert all videos with the codec mpeg4 to an mkv container using the av1 video codec
 
 .. code-block:: bash
 
-    mediacurator convert -filters:mpeg4 -out:av1,mkv -dirs:"/mnt/media/Movies/"
+    mediacurator convert --filters mpeg4 --outputs av1,mkv --dirs "/mnt/media/" "/mnt/media2/"
     
-Convert any video with avi or mpg extensions, print formated text including ffmpeg's output and then delete the originals
+Convert any video with avi or mpg extensions, print formatted text including ffmpeg's output, and then delete the originals
 
 .. code-block:: bash
 
-    mediacurator convert -del -in:avi,mpg -print:formated,verbose -dirs:/mnt/media/
+    mediacurator convert --delete --inputs avi,mpg --printop formatted,verbose --dirs "/mnt/media/" "/mnt/media2/"

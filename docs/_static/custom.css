@@ -1,53 +1,57 @@
 /* custom.css */
 
+/* Add text wrap to code blocks */
+/* pre {
+  white-space: pre-wrap;
+} */
+
 /* Add breakpoints for responsive design */
 @media screen and (min-width: 1200px) {
-    /* Adjust layout for large screens */
-    div.document {
-        width: 90%; /* Adjust width for large screens */
-        margin: 30px auto; /* Center the document */
-        display: grid; /* Use grid layout */
-        grid-template-columns: 1fr 3fr; /* Sidebar takes 1/4, main content takes 3/4 of available space */
-        grid-template-areas: 
-            "sidebar main"; /* Define grid areas */
-    }
+  /* Adjust layout for large screens */
+  div.document {
+    width: 90%; /* Adjust width for large screens */
+    margin: 30px auto; /* Center the document */
+    display: grid; /* Use grid layout */
+    grid-template-columns: 1fr 3fr; /* Sidebar takes 1/4, main content takes 3/4 of available space */
+    grid-template-areas: "sidebar main"; /* Define grid areas */
+  }
 
-    div.sphinxsidebar {
-        /* Add some content or set a min-width to ensure it occupies the grid area */
-        width: 100%; /* Example min-width */
-        grid-area: sidebar; /* Assign to sidebar grid area */
-        padding: 0 20px; /* Add padding to maintain spacing */
-        margin-top: 0;
-        margin-right: 20px;
-        margin-bottom: 0;
-        margin-left: 0; /* Adjust margins to fit within the layout */
-    }
+  div.sphinxsidebar {
+    /* Add some content or set a min-width to ensure it occupies the grid area */
+    width: 100%; /* Example min-width */
+    grid-area: sidebar; /* Assign to sidebar grid area */
+    padding: 0 20px; /* Add padding to maintain spacing */
+    margin-top: 0;
+    margin-right: 20px;
+    margin-bottom: 0;
+    margin-left: 0; /* Adjust margins to fit within the layout */
+  }
 
-    div.bodywrapper {
-        /* Ensure it occupies the grid area */
-        width: 100%;
-        grid-area: main; /* Assign to main grid area */
-        padding: 0 20px; /* Add padding to maintain spacing */
-        margin-top: 0;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-left: 20px; /* Adjust margins to fit within the layout */
-    }
+  div.bodywrapper {
+    /* Ensure it occupies the grid area */
+    width: 100%;
+    grid-area: main; /* Assign to main grid area */
+    padding: 0 20px; /* Add padding to maintain spacing */
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 20px; /* Adjust margins to fit within the layout */
+  }
 }
 
 @media screen and (max-width: 767px) {
-    /* Adjust layout for mobile phones */
-    body {
-        padding: 10px; /* Add padding to body for better spacing */
-    }
+  /* Adjust layout for mobile phones */
+  body {
+    padding: 10px; /* Add padding to body for better spacing */
+  }
 
-    div.document {
-        width: 100%; /* Set width to full for mobile phones */
-        margin: 10px auto; /* Center the document */
-        display: block; /* Revert to block layout */
-    }
+  div.document {
+    width: 100%; /* Set width to full for mobile phones */
+    margin: 10px auto; /* Center the document */
+    display: block; /* Revert to block layout */
+  }
 
-    div.sphinxsidebar {
-        display: none; /* Hide sidebar on mobile phones */
-    }
+  div.sphinxsidebar {
+    display: none; /* Hide sidebar on mobile phones */
+  }
 }
