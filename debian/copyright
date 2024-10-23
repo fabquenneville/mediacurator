@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: mediacurator
+Source: https://github.com/fabquenneville/mediacurator
+
+Files: \*
+Copyright: 2024, Fabrice Quenneville <fabrice@fabq.ca>
+License: GPLv3

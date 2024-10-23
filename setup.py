@@ -9,7 +9,7 @@ setuptools.setup(
     name="mediacurator",
     version="1.0.1",
     author="Fabrice Quenneville",
-    author_email="fab@fabq.ca",
+    author_email="fabrice@fabq.ca",
     url="https://github.com/fabquenneville/mediacurator",
     download_url="https://pypi.python.org/pypi/mediacurator",
     project_urls={

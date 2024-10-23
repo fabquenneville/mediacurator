@@ -1,0 +1,14 @@
+Source: mediacurator
+Section: utils
+Priority: optional
+Maintainer: Fabrice Quenneville <fabrice@fabq.ca>
+Build-Depends: debhelper-compat (= 13), dh-python, python3-all
+Standards-Version: 4.6.0
+Homepage: https://fabquenneville.github.io/mediacurator
+Vcs-Git: https://github.com/fabquenneville/mediacurator
+
+Package: mediacurator
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, ffmpeg
+Description: A media curation tool with CLI interface
+  This package provides a Python-based media curation tool that automates media file conversions using the FFMPEG library.
