@@ -12,8 +12,16 @@ The documentation is available on the following [link](https://fabquenneville.gi
 
 ## Releases
 
-mediacurator is released on [PyPi](https://pypi.org/project/mediacurator/).
-Installation instructions are found on the [GitHub page](https://fabquenneville.github.io/mediacurator/usage/installation.html).
+mediacurator can be installed via the following methods:
+
+- APT repository for Debian/Ubuntu systems
+- PyPi using pip
+
+For detailed installation instructions, please visit the following links:
+
+- [Installation Instructions](https://fabquenneville.github.io/mediacurator/usage/installation.html)
+- [APT Repository](https://debrepo.fabq.ca/)
+- [PyPi Page](https://pypi.org/project/mediacurator/)
 
 ## Usage
 
