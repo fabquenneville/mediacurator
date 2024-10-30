@@ -36,9 +36,47 @@
             
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
+<section id="table-of-contents">
+<span id="install-toc"></span><h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#install-about"><span class="std std-ref">About mediacurator’s installation</span></a></p></li>
+<li><p><a class="reference internal" href="#install-apt"><span class="std std-ref">Install from APT Repository</span></a></p></li>
+<li><p><a class="reference internal" href="#install-pypi"><span class="std std-ref">Install from PyPi</span></a></p></li>
+<li><p><a class="reference internal" href="#install-ffmpeg"><span class="std std-ref">Install FFmpeg</span></a></p></li>
+</ul>
+</section>
+<section id="about-mediacurator-s-installation">
+<span id="install-about"></span><h2>About mediacurator’s installation<a class="headerlink" href="#about-mediacurator-s-installation" title="Link to this heading">¶</a></h2>
 <p>This package has been tested on GNU/Linux (e.g., Debian, Ubuntu, Fedora) and Windows, and requires FFmpeg to be installed. For now, it will be distributed on <a class="reference external" href="https://github.com/fabquenneville/mediacurator.git">GitHub</a>.</p>
+</section>
+<section id="install-from-apt-repository">
+<span id="install-apt"></span><h2>Install from APT Repository<a class="headerlink" href="#install-from-apt-repository" title="Link to this heading">¶</a></h2>
+<p>The <cite>mediacurator</cite> package is now available through an APT repository. To install it along with all its dependencies (including Python, required Python packages, and FFmpeg) on a Debian/Ubuntu compatible system, follow these steps:</p>
+<ol class="arabic">
+<li><p>Add the APT repository to your system by following the instructions at the <a class="reference external" href="https://debrepo.fabq.ca/">repository homepage</a>.</p></li>
+<li><p>Update your package list:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</pre></div>
+</div>
+</li>
+<li><p>Install <cite>mediacurator</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>mediacurator
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This will automatically install the <cite>mediacurator</cite> package and all its dependencies.</p>
+</section>
+<section id="install-from-pypi">
+<span id="install-pypi"></span><h2>Install from PyPi<a class="headerlink" href="#install-from-pypi" title="Link to this heading">¶</a></h2>
+<p>You can install the <cite>mediacurator</cite> package directly from PyPi using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mediacurator
+</pre></div>
+</div>
+<p><strong>Note:</strong> If FFmpeg is not already installed, please refer to the instructions in the <a class="reference internal" href="#install-ffmpeg"><span class="std std-ref">Install FFmpeg</span></a> section.</p>
+</section>
 <section id="install-ffmpeg">
-<h2>Install FFmpeg<a class="headerlink" href="#install-ffmpeg" title="Link to this heading">¶</a></h2>
+<span id="id1"></span><h2>Install FFmpeg<a class="headerlink" href="#install-ffmpeg" title="Link to this heading">¶</a></h2>
 <p>To install FFmpeg, you can follow the instructions for your platform:</p>
 <ul>
 <li><dl>
@@ -62,13 +100,6 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </ul>
 <p>To verify your FFmpeg installation, you can run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffmpeg<span class="w"> </span>-version
-</pre></div>
-</div>
-</section>
-<section id="install-from-pypi">
-<h2>Install from PyPi<a class="headerlink" href="#install-from-pypi" title="Link to this heading">¶</a></h2>
-<p>You can install the <cite>mediacurator</cite> package directly from PyPi using the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mediacurator
 </pre></div>
 </div>
 </section>
@@ -98,8 +129,11 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="warnings.html">Warnings</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#install-ffmpeg">Install FFmpeg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about-mediacurator-s-installation">About mediacurator’s installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-from-apt-repository">Install from APT Repository</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-from-pypi">Install from PyPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-ffmpeg">Install FFmpeg</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
