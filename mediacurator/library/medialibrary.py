@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 ''' This module defines the MediaLibrary class, which manages information about the workspace and all videos in it.'''
 
+import os
+
 from pathlib import Path
 
 from .video import Video
@@ -16,6 +18,13 @@ ccyan = colorama.Fore.CYAN
 cgreen = colorama.Fore.GREEN
 creset = colorama.Fore.RESET
 
+# Constants
+VIDEO_EXTENSIONS = {
+    "3g2", "3gp", "amv", "asf", "avi", "dav", "divx", "dv", "f4v", "flv", "gif", "m1v",
+    "m2p", "m2t", "m2ts", "m2v", "m4v", "m4p", "mkv", "mov", "mp4", "mpe", "mpeg", "mpg",
+    "mpv", "mts", "mxf", "ogm", "ogv", "qt", "rm", "rmvb", "swf", "tod", "ts", "vid",
+    "vob", "webm", "wm", "wmv", "wtv",
+}
 
 class MediaLibrary():
     '''This class manages information about the workspace and all videos in it.'''
@@ -67,7 +76,7 @@ class MediaLibrary():
 
         text = ""
         if self.directories:
-            text += f"mediacurator is watching the following directories: "
+            text += f"mediacurator is watching the following directories: \n"
             text += '\n    '.join(map(str, self.directories)) + '\n'
         text += f"mediacurator is tracking {len(self.videos)} video files"
         return text
@@ -78,7 +87,8 @@ class MediaLibrary():
 
     def load_directories(self, verbose=False):
         '''
-        Scans folders for video files respecting the inputs requested by the user and saves them to the videos dictionary.
+        Scans folders for video files respecting the inputs requested by the user
+        and saves them to the videos dictionary.
 
         Args:
             verbose (bool): A flag to enable verbose output.
@@ -87,101 +97,31 @@ class MediaLibrary():
         print(
             f"{cgreen}Scanning files in {', '.join(map(str, self.directories))} for videos{creset}"
         )
+
+        # Decide once which extensions to accept
+        if not self.inputs or "any" in self.inputs:
+            wanted = VIDEO_EXTENSIONS
+        else:
+            wanted = VIDEO_EXTENSIONS & {i.lower() for i in self.inputs}
+
         videolist = []
 
         for directory in self.directories:
-            path = Path(directory)
-            # get all video filetypes
-            if "3gp" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[3G][Pp][Pp]"))
-            if "asf" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[aA][sS][fF]"))
-            if "avi" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[aA][vV][iI]"))
-            if "divx" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[dD][iI][vV][xX]"))
-            if "dv" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[dD][vV]"))
-            if "f4v" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[fF]4[vV]"))
-            if "flv" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[fF][lL][vV]"))
-            if "gif" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[gG][iI][fF]"))
-            if "m2ts" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM]2[tT][sS]"))
-            if "m4v" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM]4[vV]"))
-            if "mkv" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM][kK][vV]"))
-            if "mov" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM][oO][vV]"))
-            if "mp4" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM][pP]4"))
-            if "mpeg" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM][pP][eE][gG]"))
-            if "mpg" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM][pP][gG]"))
-            if "mts" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[mM][tT][sS]"))
-            if "ogm" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[oO][gG][mM]"))
-            if "ogv" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[oO][gG][vV]"))
-            if "rm" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[rR][mM]"))
-            if "swf" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[sS][wW][fF]"))
-            if "ts" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[tT][sS]"))
-            if "vid" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[vV][iI][dD]"))
-            if "vob" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[vV][oO][bB]"))
-            if "webm" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[wW][eE][bB][mM]"))
-            if "wmv" in self.inputs or "any" in self.inputs or len(
-                    self.inputs) < 1:
-                videolist += list(path.rglob("*.[wW][mM][vV]"))
-
-        # Remove folders
-        videolist_tmp = videolist
-        videolist = [video for video in videolist_tmp if video.is_file()]
+            for root, _dirs, files in os.walk(directory):
+                for name in files:
+                    ext = os.path.splitext(name)[1][1:].lower()
+                    if ext in wanted:
+                        videolist.append(Path(root) / name)
 
         # Map it all to the videos dictionary as initiated Video objects
         print(
             f"{cgreen}Analyzing {len(videolist)} videos in {', '.join(map(str, self.directories))}{creset}"
         )
-        iteration = 0
-        for video in videolist:
+
+        total = len(videolist)
+        for i, video in enumerate(videolist, 1):
             if verbose:
-                iteration += 1
-                print(f'{int((iteration / len(videolist) * 100))}% complete',
-                      end='\r')
+                print(f"{int(i / total * 100)}% complete", end="\r")
 
             self.videos[video] = Video(video, verbose=verbose)
 

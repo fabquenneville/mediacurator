@@ -7,6 +7,7 @@ import argparse
 import argcomplete
 import subprocess
 import os
+import sys
 
 # Import colorama for colored output
 import colorama
@@ -40,6 +41,13 @@ def load_arguments():
         '--delete',
         action='store_true',
         help='Delete found results after successful operations')
+
+    parser.add_argument(
+        "-y",
+        "--yes",
+        action="store_true",
+        help="skip confirmation prompts",
+    )
 
     parser.add_argument('-i',
                         '--inputs',
@@ -91,11 +99,11 @@ def load_arguments():
     # Confirm with the user about deletion if delete option is selected
     if args.delete:
         print(f"{cyellow}WARNING: Delete option selected!{creset}")
-        if not user_confirm(
-                f"Are you sure you wish to delete all found results after selected operations are successful? [Y/N] ?",
+        if not args.yes and not user_confirm(
+                "Are you sure you wish to delete all found results after selected operations are successful? [Y/N] ?",
                 color="yellow"):
             print(f"{cgreen}Exiting!{creset}")
-            exit()
+            sys.exit()
 
     return args
 
