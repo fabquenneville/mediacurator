@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-'''
-    mediacurator is a Python command line tool to manage a media database.
-        * List all the videos and their information with or without filters
-        * Batch find and repair/convert videos with encoding errors
-        * Batch recode videos to more modern codecs (x265 / AV1) based on filters: extensions, codecs, resolutions...
-        
-    Examples:
-    mediacurator list --filters old --printop formatted --dirs "/mnt/media/" "/mnt/media2/"
-    mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/media/" "/mnt/media2/"
-    mediacurator convert --delete --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
-'''
+"""
+mediacurator is a Python command line tool to manage a media database.
+    * List all the videos and their information with or without filters
+    * Batch find and repair/convert videos with encoding errors
+    * Batch recode videos to more modern codecs (x265 / AV1) based on filters: extensions, codecs, resolutions...
+
+Examples:
+mediacurator list --filters old --printop formatted --dirs "/mnt/media/" "/mnt/media2/"
+mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/media/" "/mnt/media2/"
+mediacurator convert --delete --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
+"""
 
 # Normal import
 try:
@@ -31,11 +31,11 @@ creset = colorama.Fore.RESET
 
 
 def main():
-    '''
+    """
     Main function for mediacurator CLI tool.
-    
+
     Handles command execution based on user input.
-    '''
+    """
 
     print(f"{colorama.Style.BRIGHT}")
 
@@ -48,11 +48,13 @@ def main():
 
     try:
         # Initialize MediaLibrary with user-provided arguments
-        medialibrary = MediaLibrary(files=arguments.files,
-                                    directories=arguments.dirs,
-                                    inputs=arguments.inputs,
-                                    filters=arguments.filters,
-                                    verbose='verbose' in arguments.printop)
+        medialibrary = MediaLibrary(
+            files=arguments.files,
+            directories=arguments.dirs,
+            inputs=arguments.inputs,
+            filters=arguments.filters,
+            verbose="verbose" in arguments.printop,
+        )
         print(medialibrary)  # Optionally display the state of the MediaLibrary
     except ValueError as e:
         # Handle initialization errors
@@ -68,11 +70,13 @@ def main():
 
     elif arguments.command == "convert":
         vcodec = "av1" if "av1" in arguments.outputs else "x265"
-        medialibrary.convert_videos(vcodec,
-                                    formatted=formatted,
-                                    verbose="verbose" in arguments.printop,
-                                    delete=arguments.delete)
+        medialibrary.convert_videos(
+            vcodec,
+            formatted=formatted,
+            verbose="verbose" in arguments.printop,
+            delete=arguments.delete,
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

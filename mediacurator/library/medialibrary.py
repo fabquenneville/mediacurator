@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-''' This module defines the MediaLibrary class, which manages information about the workspace and all videos in it.'''
+"""This module defines the MediaLibrary class, which manages information about the workspace and all videos in it."""
 
 import os
 
@@ -19,23 +19,60 @@ cgreen = colorama.Fore.GREEN
 creset = colorama.Fore.RESET
 
 # Constants
-VIDEO_EXTENSIONS = {
-    "3g2", "3gp", "amv", "asf", "avi", "dav", "divx", "dv", "f4v", "flv", "gif", "m1v",
-    "m2p", "m2t", "m2ts", "m2v", "m4v", "m4p", "mkv", "mov", "mp4", "mpe", "mpeg", "mpg",
-    "mpv", "mts", "mxf", "ogm", "ogv", "qt", "rm", "rmvb", "swf", "tod", "ts", "vid",
-    "vob", "webm", "wm", "wmv", "wtv",
-}
+VIDEO_EXTENSIONS = frozenset(
+    {
+        "3g2",
+        "3gp",
+        "amv",
+        "asf",
+        "avi",
+        "dav",
+        "divx",
+        "dv",
+        "f4v",
+        "flv",
+        "gif",
+        "m1v",
+        "m2p",
+        "m2t",
+        "m2ts",
+        "m2v",
+        "m4p",
+        "m4v",
+        "mkv",
+        "mov",
+        "mp4",
+        "mpe",
+        "mpeg",
+        "mpg",
+        "mpv",
+        "mts",
+        "mxf",
+        "ogm",
+        "ogv",
+        "qt",
+        "rm",
+        "rmvb",
+        "swf",
+        "tod",
+        "ts",
+        "vid",
+        "vob",
+        "webm",
+        "wm",
+        "wmv",
+        "wtv",
+    }
+)
 
-class MediaLibrary():
-    '''This class manages information about the workspace and all videos in it.'''
 
-    def __init__(self,
-                 files=None,
-                 directories=None,
-                 inputs=["any"],
-                 filters=[],
-                 verbose=False):
-        '''
+class MediaLibrary:
+    """This class manages information about the workspace and all videos in it."""
+
+    def __init__(
+        self, files=None, directories=None, inputs=["any"], filters=[], verbose=False
+    ):
+        """
         Initializes a MediaLibrary instance with provided parameters.
 
         Args:
@@ -44,7 +81,7 @@ class MediaLibrary():
             inputs (list): A list of input filters used to determine which videos to include when browsing directories (default is ["any"]).
             filters (list): A list of filters to apply to the videos (default is an empty list).
             verbose (bool): A flag to enable verbose output (default is False).
-        '''
+        """
 
         self.directories = None
         self.inputs = inputs
@@ -67,17 +104,17 @@ class MediaLibrary():
         self.filter_videos(verbose)
 
     def __str__(self):
-        '''
+        """
         Returns a string representation of the MediaLibrary instance.
 
         Returns:
             str: Information about the MediaLibrary instance.
-        '''
+        """
 
         text = ""
         if self.directories:
             text += f"mediacurator is watching the following directories: \n"
-            text += '\n    '.join(map(str, self.directories)) + '\n'
+            text += "\n    ".join(map(str, self.directories)) + "\n"
         text += f"mediacurator is tracking {len(self.videos)} video files"
         return text
 
@@ -86,13 +123,13 @@ class MediaLibrary():
             self.videos[filepath] = Video(filepath, verbose=verbose)
 
     def load_directories(self, verbose=False):
-        '''
+        """
         Scans folders for video files respecting the inputs requested by the user
         and saves them to the videos dictionary.
 
         Args:
             verbose (bool): A flag to enable verbose output.
-        '''
+        """
 
         print(
             f"{cgreen}Scanning files in {', '.join(map(str, self.directories))} for videos{creset}"
@@ -126,88 +163,119 @@ class MediaLibrary():
             self.videos[video] = Video(video, verbose=verbose)
 
     def filter_videos(self, verbose=False):
-        '''
+        """
         Marks videos for operation in the videos dictionary (default is not to operate).
 
         Args:
             verbose (bool): A flag to enable verbose output.
-        '''
+        """
 
         print(
             f"{cgreen}Filtering {len(self.videos)} videos for the requested parameters{creset}"
         )
 
         for filepath in self.videos:
-
             # Filter for filetypes
-            if len([
-                    filtr for filtr in self.filters if filtr in [
-                        "old", "mpeg4", "mpeg", "wmv3", "wmv", "h264", "hevc",
-                        "x265", "av1"
+            if (
+                len(
+                    [
+                        filtr
+                        for filtr in self.filters
+                        if filtr
+                        in [
+                            "old",
+                            "mpeg4",
+                            "mpeg",
+                            "wmv3",
+                            "wmv",
+                            "h264",
+                            "hevc",
+                            "x265",
+                            "av1",
+                        ]
                     ]
-            ]) > 0:
+                )
+                > 0
+            ):
                 operate = False
-                if "old" in self.filters and self.videos[
-                        filepath].codec not in ["hevc", "av1"]:
+                if "old" in self.filters and self.videos[filepath].codec not in [
+                    "hevc",
+                    "av1",
+                ]:
                     operate = True
-                if ("mpeg4" in self.filters or "mpeg"
-                        in self.filters) and self.videos[filepath].codec in [
-                            "mpeg4", "msmpeg4v3"
-                        ]:
+                if ("mpeg4" in self.filters or "mpeg" in self.filters) and self.videos[
+                    filepath
+                ].codec in ["mpeg4", "msmpeg4v3"]:
                     operate = True
                 if "mpeg" in self.filters and self.videos[filepath].codec in [
-                        "mpeg1video"
+                    "mpeg1video"
                 ]:
                     operate = True
-                if ("wmv3" in self.filters or "wmv" in self.filters
-                    ) and self.videos[filepath].codec in ["wmv3"]:
+                if ("wmv3" in self.filters or "wmv" in self.filters) and self.videos[
+                    filepath
+                ].codec in ["wmv3"]:
                     operate = True
-                if "h264" in self.filters and self.videos[filepath].codec in [
-                        "h264"
-                ]:
+                if "h264" in self.filters and self.videos[filepath].codec in ["h264"]:
                     operate = True
-                if ("hevc" in self.filters or "x265" in self.filters
-                    ) and self.videos[filepath].codec in ["hevc"]:
+                if ("hevc" in self.filters or "x265" in self.filters) and self.videos[
+                    filepath
+                ].codec in ["hevc"]:
                     operate = True
-                if "av1" in self.filters and self.videos[filepath].codec in [
-                        "av1"
-                ]:
+                if "av1" in self.filters and self.videos[filepath].codec in ["av1"]:
                     operate = True
                 self.videos[filepath].operate = operate
 
             # Keep video for operation if specified resolution
-            if self.videos[filepath].operate and len([
-                    filtr for filtr in self.filters if filtr in
-                ["lowres", "hd", "subsd", "sd", "720p", "1080p", "uhd"]
-            ]) > 0:
+            if (
+                self.videos[filepath].operate
+                and len(
+                    [
+                        filtr
+                        for filtr in self.filters
+                        if filtr
+                        in ["lowres", "hd", "subsd", "sd", "720p", "1080p", "uhd"]
+                    ]
+                )
+                > 0
+            ):
                 operate = False
 
-                if "subsd" in self.filters and self.videos[
-                        filepath].definition in ["subsd"]:
+                if "subsd" in self.filters and self.videos[filepath].definition in [
+                    "subsd"
+                ]:
                     operate = True
-                if "sd" in self.filters and self.videos[
-                        filepath].definition in ["sd"]:
+                if "sd" in self.filters and self.videos[filepath].definition in ["sd"]:
                     operate = True
-                if "720p" in self.filters and self.videos[
-                        filepath].definition in ["720p"]:
+                if "720p" in self.filters and self.videos[filepath].definition in [
+                    "720p"
+                ]:
                     operate = True
-                if "1080p" in self.filters and self.videos[
-                        filepath].definition in ["1080p"]:
+                if "1080p" in self.filters and self.videos[filepath].definition in [
+                    "1080p"
+                ]:
                     operate = True
-                if "uhd" in self.filters and self.videos[
-                        filepath].definition in ["uhd"]:
+                if "uhd" in self.filters and self.videos[filepath].definition in [
+                    "uhd"
+                ]:
                     operate = True
-                if "lowres" in self.filters and self.videos[
-                        filepath].definition in ["subsd", "sd"]:
+                if "lowres" in self.filters and self.videos[filepath].definition in [
+                    "subsd",
+                    "sd",
+                ]:
                     operate = True
-                if "hd" in self.filters and self.videos[
-                        filepath].definition in ["720p", "1080p", "uhd"]:
+                if "hd" in self.filters and self.videos[filepath].definition in [
+                    "720p",
+                    "1080p",
+                    "uhd",
+                ]:
                     operate = True
                 self.videos[filepath].operate = operate
 
             # Keep video for operation if ffmpeg error exists
-            if self.videos[filepath].operate and len(
-                [filtr for filtr in self.filters if filtr in ["fferror"]]) > 0:
+            if (
+                self.videos[filepath].operate
+                and len([filtr for filtr in self.filters if filtr in ["fferror"]]) > 0
+            ):
                 operate = False
                 if self.videos[filepath].error:
                     operate = True
@@ -218,7 +286,7 @@ class MediaLibrary():
         )
 
     def unwatch(self, filepath, delete=False):
-        '''
+        """
         Removes a video from the index and deletes it if requested.
 
         Args:
@@ -227,7 +295,7 @@ class MediaLibrary():
 
         Returns:
             bool: True if operation successful, False otherwise.
-        '''
+        """
 
         if delete:
             deletefile(filepath)
@@ -241,8 +309,9 @@ class MediaLibrary():
 
     def list_videos(self, formatted: bool = False, delete: bool = False):
         # Create a sorted list of videos marked for operation
-        keylist = sorted(filepath for filepath in self.videos
-                         if self.videos[filepath].operate)
+        keylist = sorted(
+            filepath for filepath in self.videos if self.videos[filepath].operate
+        )
 
         for filepath in keylist:
             self.videos[filepath].print_details(formatted)
@@ -255,16 +324,19 @@ class MediaLibrary():
         # For testing, we can just call the list_videos method as they behave similarly
         self.list_videos(formatted, delete)
 
-    def convert_videos(self,
-                       vcodec: str,
-                       formatted: bool = False,
-                       verbose: bool = False,
-                       delete: bool = False):
+    def convert_videos(
+        self,
+        vcodec: str,
+        formatted: bool = False,
+        verbose: bool = False,
+        delete: bool = False,
+    ):
         counter = 0
 
         # Create a sorted list of videos marked for operation
-        keylist = sorted(filepath for filepath in self.videos
-                         if self.videos[filepath].operate)
+        keylist = sorted(
+            filepath for filepath in self.videos if self.videos[filepath].operate
+        )
 
         for filepath in keylist:
             counter += 1
@@ -285,8 +357,9 @@ class MediaLibrary():
                 self.videos[filepath].operate = False
 
                 # Get the path for the new video file
-                newfpath = self.videos[filepath].path + self.videos[
-                    filepath].filename_new
+                newfpath = (
+                    self.videos[filepath].path + self.videos[filepath].filename_new
+                )
 
                 # Add the new video to the library
                 self.videos[newfpath] = Video(newfpath, verbose=verbose)
