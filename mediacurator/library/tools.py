@@ -5,9 +5,12 @@ These are various tools used by mediacurator
 
 import argparse
 import argcomplete
+import re
+import shutil
 import subprocess
 import os
 import sys
+from functools import lru_cache
 
 # Import colorama for colored output
 import colorama
@@ -138,7 +141,7 @@ def detect_ffmpeg():
         if "ffmpeg version" in txt:
             # Strip the useless text
             return txt.split(" ")[2]
-    except:
+    except (OSError, subprocess.CalledProcessError):
         pass
     return False
 
@@ -153,7 +156,10 @@ def check_ffmpeg():
     ffmpeg_version = detect_ffmpeg()
     if not ffmpeg_version:
         print(f"{cred}No ffmpeg version detected{creset}")
-        exit()
+        sys.exit(1)
+    if shutil.which("ffprobe") is None:
+        print(f"{cred}No ffprobe detected{creset}")
+        sys.exit(1)
     print(f"{cblue}ffmpeg version detected: {ffmpeg_version}{creset}")
     return ffmpeg_version
 
@@ -180,7 +186,7 @@ def user_confirm(question, color=False):
     elif answer.lower() in ["n", "no"]:
         return False
     print("Please answer with yes (Y) or no (N)...")
-    return user_confirm(question)
+    return user_confirm(question, color=color)
 
 
 def deletefile(filepath):
@@ -201,25 +207,52 @@ def deletefile(filepath):
     return True
 
 
-def findfreename(filepath, attempt=0):
-    """Find a free filename by appending [HEVC] or [HEVC](#) to the name if necessary
+def findfreename(filepath, tag="HEVC"):
+    """Find a free filename by appending [tag] or [tag](#) to the name if necessary
 
     Args:
         filepath (str): The full filepath
-        attempt (int, optional): The number of attempts made
+        tag (str, optional): The label to add, e.g. HEVC, AV1 or AV2
     Returns:
         str: The first free filepath found
     """
-    attempt += 1
-    filename = str(filepath)[: str(filepath).rindex(".")]
-    extension = str(filepath)[str(filepath).rindex(".") :]
-    hevcpath = filename + "[HEVC]" + extension
-    copynumpath = filename + f"[HEVC]({attempt})" + extension
-
-    if not os.path.exists(filepath) and attempt <= 2:
+    if not os.path.exists(filepath):
         return filepath
-    elif not os.path.exists(hevcpath) and attempt <= 2:
-        return hevcpath
-    elif not os.path.exists(copynumpath):
-        return copynumpath
-    return findfreename(filepath, attempt)
+
+    root, extension = os.path.splitext(str(filepath))
+    candidate = f"{root}[{tag}]{extension}"
+    attempt = 0
+    while os.path.exists(candidate):
+        attempt += 1
+        candidate = f"{root}[{tag}]({attempt}){extension}"
+    return candidate
+
+
+@lru_cache(maxsize=None)
+def find_encoder(codec):
+    """Find an ffmpeg encoder for a codec by asking the installed ffmpeg.
+
+    Nothing is hardcoded, so this keeps working whatever name an encoder
+    ends up with (e.g. libaom-av1 and libsvtav1 both report "(codec av1)").
+
+    Args:
+        codec (str): The codec name, e.g. "av2"
+    Returns:
+        str: The name of the first matching encoder, or None if there is none
+    """
+    try:
+        output = subprocess.check_output(
+            ["ffmpeg", "-hide_banner", "-encoders"], stderr=subprocess.STDOUT
+        ).decode(errors="replace")
+    except (OSError, subprocess.CalledProcessError):
+        return None
+
+    for line in output.splitlines():
+        match = re.match(r"^\s*V\S*\s+(\S+)\s+(.*)$", line)
+        if not match:
+            continue
+        name, rest = match.groups()
+        tag = re.search(r"\(codec (\S+?)\)", rest)
+        if name == codec or (tag and tag.group(1) == codec):
+            return name
+    return None

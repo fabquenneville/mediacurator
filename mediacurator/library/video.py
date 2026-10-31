@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """This module defines the Video class, which contains information and methods for video files."""
 
-from .tools import deletefile, findfreename
+from .tools import deletefile, findfreename, find_encoder
+import shutil
 import subprocess
 import os
+import sys
 
 # Import colorama for colored output
 import colorama
@@ -14,6 +16,9 @@ colorama.init()
 cyellow = colorama.Fore.YELLOW
 cred = colorama.Fore.RED
 creset = colorama.Fore.RESET
+
+# Constants
+AV2_QUALITY_ARGS = ["-crf", "30"]
 
 
 class Video:
@@ -42,12 +47,9 @@ class Video:
         self.height = None
 
         # Break down the full path into its components
-        if os.name == "nt":
-            self.path = str(filepath)[: str(filepath).rindex("\\") + 1]
-            self.filename_origin = str(filepath)[str(filepath).rindex("\\") + 1 :]
-        else:
-            self.path = str(filepath)[: str(filepath).rindex("/") + 1]
-            self.filename_origin = str(filepath)[str(filepath).rindex("/") + 1 :]
+        # (self.path keeps its trailing separator, and is "" for a bare filename)
+        head, self.filename_origin = os.path.split(str(filepath))
+        self.path = os.path.join(head, "") if head else ""
 
         if not os.path.exists(filepath):
             self.error = (
@@ -167,6 +169,13 @@ class Video:
 
         print(output)
 
+    def _discard_partial_output(self):
+        """Removes the half-written output file after a failed or cancelled conversion."""
+        partial = self.path + self.filename_tmp
+        if os.path.exists(partial):
+            deletefile(partial)
+        self.filename_tmp = ""
+
     def convert(
         self,
         vcodec="x265",
@@ -179,7 +188,7 @@ class Video:
         ensuring even width/height by adding a black pixel gap if necessary.
 
         Args:
-            vcodec (str): The new video codec, supports av1 or x265.
+            vcodec (str): The new video codec, supports av2, av1 or x265.
             acodec (bool): Currently not enabled, will be for audio codecs.
             extension (str): The new video container format and file extension.
             verbose (bool): A flag enabling verbosity.
@@ -188,17 +197,27 @@ class Video:
             bool: True if operation successful, False otherwise.
         """
 
+        # Resolve the encoder first, so we fail before touching any file
+        av2_encoder = None
+        if vcodec == "av2":
+            av2_encoder = find_encoder("av2")
+            if not av2_encoder:
+                print(
+                    f"{cred}No AV2 encoder found in this ffmpeg build, "
+                    f"cannot convert '{self.filename_origin}'{creset}"
+                )
+                return False
+        elif vcodec not in ("av1", "x265", "hevc"):
+            raise ValueError(f"Unsupported video codec: {vcodec}")
+
+        tag = {"av1": "AV1", "av2": "AV2"}.get(vcodec, "HEVC")
+
         # Setting new filename
         base_filename, _ = os.path.splitext(self.filename_origin)
-
-        if "mp4" in extension:
-            newfilename = base_filename + ".mp4"
-        else:
-            newfilename = base_filename + ".mkv"
+        newfilename = base_filename + (".mp4" if "mp4" in extension else ".mkv")
 
         if os.path.exists(self.path + newfilename):
-            newfilename = findfreename(self.path + newfilename)
-            newfilename = os.path.basename(newfilename)
+            newfilename = os.path.basename(findfreename(self.path + newfilename, tag))
 
         self.filename_tmp = newfilename
 
@@ -219,31 +238,25 @@ class Video:
 
         # Conversion options based on codec
         if vcodec == "av1":
-            args += ["-c:v", "libaom-av1"]
-            # Optionally, control quality with a crf value for AV1
-            args += ["-crf", "30"]
-        elif vcodec == "x265" or vcodec == "hevc":
+            args += ["-c:v", "libsvtav1", "-preset", "6", "-crf", "30"]
+        elif vcodec == "av2":
+            args += ["-c:v", av2_encoder] + AV2_QUALITY_ARGS
+        else:
             args += ["-c:v", "libx265"]
             # Control quality with crf for x265
             args += ["-preset", "medium", "-crf", "28"]
             # Add max_muxing_queue_size to avoid buffer overflows
             args += ["-max_muxing_queue_size", "1000"]
 
-        # Check for odd width/height and adjust with padding
-        width_canvas = self.width
-        height_canvas = self.height
-        if self.width % 2 != 0:
-            width_canvas = self.width + 1
-
-        if self.height % 2 != 0:
-            height_canvas = self.height + 1
-
-        # Only add padding if needed
-        if self.width != width_canvas or self.height != height_canvas:
-            args += [
-                "-vf",
-                f"pad={width_canvas}:{height_canvas}:(ow-iw)/2:(oh-ih)/2:black",
-            ]
+        # Encoders need even width/height: pad with a black pixel if needed
+        if self.width and self.height:
+            width_canvas = self.width + self.width % 2
+            height_canvas = self.height + self.height % 2
+            if (width_canvas, height_canvas) != (self.width, self.height):
+                args += [
+                    "-vf",
+                    f"pad={width_canvas}:{height_canvas}:(ow-iw)/2:(oh-ih)/2:black",
+                ]
 
         # Copy audio and subtitles without re-encoding
         args += ["-c:a", "copy", "-c:s", "copy"]
@@ -253,29 +266,32 @@ class Video:
 
         try:
             if verbose:
-                subprocess.call(args)
+                subprocess.run(args, check=True)
             else:
                 subprocess.check_output(args, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            deletefile(self.path + self.filename_tmp)
-            self.filename_tmp = ""
+            self._discard_partial_output()
             print(f"{cred}Conversion failed {e}{creset}")
             return False
         except KeyboardInterrupt:
             print(f"{cyellow}Conversion cancelled, cleaning up...{creset}")
-            deletefile(self.path + self.filename_tmp)
-            self.filename_tmp = ""
-            exit()
-        else:
-            try:
-                os.chmod(f"{self.path}{self.filename_tmp}", 0o777)
-            except PermissionError:
-                print(
-                    f"{cred}PermissionError on: '{self.path}{self.filename_tmp}'{creset}"
-                )
-            self.filename_new = self.filename_tmp
-            self.filename_tmp = ""
-            return True
+            self._discard_partial_output()
+            sys.exit(130)
+
+        output_path = self.path + self.filename_tmp
+        if not os.path.exists(output_path) or os.path.getsize(output_path) == 0:
+            self._discard_partial_output()
+            print(f"{cred}Conversion produced no output{creset}")
+            return False
+
+        # Give the new file the same permissions as the original
+        try:
+            shutil.copymode(self.path + self.filename_origin, output_path)
+        except OSError:
+            print(f"{cred}Could not copy permissions to: '{output_path}'{creset}")
+        self.filename_new = self.filename_tmp
+        self.filename_tmp = ""
+        return True
 
     @staticmethod
     def detect_fferror(filepath):
@@ -406,6 +422,6 @@ class Video:
         """
         try:
             size = int(os.path.getsize(filepath) / 1024 / 1024)
-        except subprocess.CalledProcessError:
+        except OSError:
             return False
         return size

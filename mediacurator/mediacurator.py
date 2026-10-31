@@ -3,7 +3,7 @@
 mediacurator is a Python command line tool to manage a media database.
     * List all the videos and their information with or without filters
     * Batch find and repair/convert videos with encoding errors
-    * Batch recode videos to more modern codecs (x265 / AV1) based on filters: extensions, codecs, resolutions...
+    * Batch recode videos to more modern codecs (x265 / AV1 / AV2) based on filters: extensions, codecs, resolutions...
 
 Examples:
 mediacurator list --filters old --printop formatted --dirs "/mnt/media/" "/mnt/media2/"
@@ -11,14 +11,16 @@ mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/med
 mediacurator convert --delete --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
 """
 
+import sys
+
 # Normal import
 try:
     from mediacurator.library.medialibrary import MediaLibrary
-    from mediacurator.library.tools import check_ffmpeg, load_arguments
+    from mediacurator.library.tools import check_ffmpeg, find_encoder, load_arguments
 # Allow local import for development purposes
 except ModuleNotFoundError:
     from library.medialibrary import MediaLibrary
-    from library.tools import check_ffmpeg, load_arguments
+    from library.tools import check_ffmpeg, find_encoder, load_arguments
 
 # Import colorama for colored output
 import colorama
@@ -46,6 +48,24 @@ def main():
     arguments = load_arguments()
     formatted = "formatted" in arguments.printop or "verbose" in arguments.printop
 
+    # Pick the target codec (av2 > av1 > x265) and fail early, before scanning
+    # the library, if it can't be encoded by this ffmpeg build
+    outputs = [output.lower() for output in arguments.outputs]
+    if "av2" in outputs:
+        vcodec = "av2"
+    elif "av1" in outputs:
+        vcodec = "av1"
+    else:
+        vcodec = "x265"
+
+    if arguments.command == "convert" and vcodec == "av2" and not find_encoder("av2"):
+        print(
+            f"{cred}ERROR: this ffmpeg build has no AV2 encoder (AV2 support in "
+            f"ffmpeg is still pending). Use an ffmpeg build that has one, or "
+            f"choose av1 / x265.{creset}"
+        )
+        sys.exit(1)
+
     try:
         # Initialize MediaLibrary with user-provided arguments
         medialibrary = MediaLibrary(
@@ -59,7 +79,7 @@ def main():
     except ValueError as e:
         # Handle initialization errors
         print(f"{cred}ERROR: {str(e)}{creset}")
-        return
+        sys.exit(1)
 
     # Execute command based on the user's input
     if arguments.command == "list":
@@ -69,7 +89,6 @@ def main():
         medialibrary.test_videos(formatted, delete=arguments.delete)
 
     elif arguments.command == "convert":
-        vcodec = "av1" if "av1" in arguments.outputs else "x265"
         medialibrary.convert_videos(
             vcodec,
             formatted=formatted,
