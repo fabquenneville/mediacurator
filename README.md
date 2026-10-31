@@ -29,10 +29,13 @@ For detailed installation instructions, please visit the following links:
     mediacurator <command> [options]
 
     # Command options
-    mediacurator [list convert] [-del/--delete]
-        [-i/--inputs any 3gp asf avi divx dv f4v flv gif m2ts m4v mkv mov mp4 mpeg mpg mts ogm ogv rm swf ts vid vob webm wmv]
-        [-fl/--filters fferror old lowres hd 720p 1080p uhd mpeg mpeg4 x264 wmv3 wmv]
-        [-o/--outputs mkv/mp4 x265/av1]
+    mediacurator [list convert] [-del/--delete/-delr/--delete-on-reduce]
+        [
+            -i/--inputs any 3g2 3gp amv asf avi dav divx dv f4v flv gif m1v m2p m2t m2ts m2v m4p m4v mkv mov mp4 mpe
+                        mpeg mpg mpv mts mxf ogm ogv qt rm rmvb swf tod ts vid vob webm wm wmv wtv
+        ]
+        [-fl/--filters fferror old lowres hd 720p 1080p 2160p uhd 4k mpeg mpeg4 x264 wmv3 wmv]
+        [-o/--outputs mkv/mp4 x265/av1/av2]
         [-p/--printop list formatted verbose]
         [-d/--dirs "/mnt/media/" "/mnt/media2/"]
         [-f/--files "file1.ext" "file2.ext"]
@@ -46,6 +49,7 @@ For detailed installation instructions, please visit the following links:
 **Options:**
 
 - `-del` or `--delete`: Delete found results after successful operations. **Use with caution**.
+- `-delr` or `--delete-on-reduce`: Delete the original post conversion only if the new file is smaller. **Use with caution**.
 - `-i <input>` or `--inputs <input>`: Specify input file formats (default: `any`).
 - `-fl <filter>` or `--filters <filter>`: Apply filters to the selection of videos.
 - `-o <output>` or `--outputs <output>`: Specify output formats (default: `mkv`, `x265`).
@@ -71,8 +75,8 @@ mediacurator list --filters old --printop formatted --dirs "/mnt/media/" "/mnt/m
 # Convert all MPEG4 videos to AV1 in MP4 format, and delete originals after conversion
 mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/media/" "/mnt/media2/"
 
-# Convert videos with AVI or MPG extensions, print formatted and verbose output, and delete originals
-mediacurator convert --delete --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
+# Convert videos with AVI or MPG extensions, print formatted and verbose output, and delete originals if size was reduced
+mediacurator convert --delete-on-reduce --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
 ```
 
 ## Contributing

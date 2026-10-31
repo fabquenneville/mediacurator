@@ -14,8 +14,12 @@ Synopsis
 
     mediacurator <command> [options]
 
-    mediacurator [list convert] [-del/--delete]
-        [-i/--inputs any 3gp asf avi divx dv f4v flv gif m2ts m4v mkv mov mp4 mpeg mpg mts ogm ogv rm swf ts vid vob webm wmv]
+    mediacurator [list convert] [-del/--delete/-delr/--delete-on-reduce]
+        [
+            -i/--inputs any 3g2 3gp amv asf avi dav divx dv f4v flv gif m1v m2p m2t
+                        m2ts m2v m4p m4v mkv mov mp4 mpe mpeg mpg mpv mts mxf ogm
+                        ogv qt rm rmvb swf tod ts vid vob webm wm wmv wtv
+        ]
         [-fl/--filters fferror old lowres hd 720p 1080p uhd mpeg mpeg4 x264 wmv3 wmv]
         [-o/--outputs mkv/mp4 x265/av1]
         [-p/--printop list formatted verbose]
@@ -29,6 +33,7 @@ Synopsis
 **Options:**
 
 - `-del` or `--delete`: Delete found results after successful operations. **Use with caution**.
+- `-delr` or `--delete-on-reduce`: Delete the original post conversion only if the new file is smaller. **Use with caution**.
 - `-i <input>` or `--inputs <input>`: Specify input file formats (default: `any`).
 - `-fl <filter>` or `--filters <filter>`: Apply filters to the selection of videos.
 - `-o <output>` or `--outputs <output>`: Specify output formats (default: `mkv`, `x265`).
@@ -73,11 +78,19 @@ convert
 
     See :doc:`warnings`
 
+--delete-on-reduce
+==================
+    Short form: `-delr`
+
+    Delete the original videos post conversion only if the new file is smaller. **Use with caution**.
+
+    See :doc:`warnings`
+
 --inputs
 ========
     Short form: `-i`
 
-    [**any**, 3gp, asf, avi, divx, dv, f4v, flv, gif, m2ts, m4v, mkv, mov, mp4, mpeg, mpg, mts, ogm, ogv, rm, swf, ts, vid, vob, webm, wmv]
+    *Supported formats:* `any`, 3g2, 3gp, amv, asf, avi, dav, divx, dv, f4v, flv, gif, m1v, m2p, m2t, m2ts, m2v, m4p, m4v, mkv, mov, mp4, mpe, mpeg, mpg, mpv, mts, mxf, ogm, ogv, qt, rm, rmvb, swf, tod, ts, vid, vob, webm, wm, wmv, wtv.
 
     Filters videos by file format (container extensions). The default is `any`, meaning all formats are included.
 
@@ -85,7 +98,7 @@ convert
 =========
     Short form: `-fl`
 
-    [fferror, old, lowres, hd, 720p, 1080p, uhd, mpeg, mpeg4, x264, wmv3, wmv]
+    [fferror, old, lowres, hd, 720p, 1080p, 2160p, uhd, 4k, mpeg, mpeg4, x264, wmv3, wmv]
 
     Filters videos based on specific criteria:
 
@@ -93,7 +106,7 @@ convert
     - **old**: Select videos using outdated codecs (anything except hevc or av1)
     - **hd**: Select videos in HD (720p, 1080p, UHD)
     - **lowres**: Select videos that are not in HD
-    - **uhd**: Select Ultra-HD videos (width or height >= 2160)
+    - **uhd**: Select Ultra-HD videos (width or height >= 2160) (Alias are 2160p and 4k)
     - **1080p**: Select Full-HD videos (1440 <= width < 2160 or 1080 <= height < 2160)
     - **720p**: Select HD videos (1280 <= width < 1440 or 720 <= height < 1080)
     - **sd**: Select standard-definition videos (480 <= height < 720)
@@ -165,8 +178,8 @@ Examples
     mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/media/" "/mnt/media2/"
     
     # This command converts AVI or MPG videos, displays detailed output during conversion, and
-    # deletes originals.
-    mediacurator convert --delete --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
+    # deletes originals if size was reduced.
+    mediacurator convert --delete-on-reduce --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
 
 For more examples, see :doc:`use_cases`
 

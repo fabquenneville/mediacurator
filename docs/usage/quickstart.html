@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d9b65b63" />
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -39,8 +39,12 @@
 <p>To use <cite>mediacurator</cite>, execute the following command structure:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>&lt;command&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
 
-mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w"> </span>convert<span class="o">]</span><span class="w"> </span><span class="o">[</span>-del/--delete<span class="o">]</span>
-<span class="w">    </span><span class="o">[</span>-i/--inputs<span class="w"> </span>any<span class="w"> </span>3gp<span class="w"> </span>asf<span class="w"> </span>avi<span class="w"> </span>divx<span class="w"> </span>dv<span class="w"> </span>f4v<span class="w"> </span>flv<span class="w"> </span>gif<span class="w"> </span>m2ts<span class="w"> </span>m4v<span class="w"> </span>mkv<span class="w"> </span>mov<span class="w"> </span>mp4<span class="w"> </span>mpeg<span class="w"> </span>mpg<span class="w"> </span>mts<span class="w"> </span>ogm<span class="w"> </span>ogv<span class="w"> </span>rm<span class="w"> </span>swf<span class="w"> </span>ts<span class="w"> </span>vid<span class="w"> </span>vob<span class="w"> </span>webm<span class="w"> </span>wmv<span class="o">]</span>
+mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w"> </span>convert<span class="o">]</span><span class="w"> </span><span class="o">[</span>-del/--delete/-delr/--delete-on-reduce<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>
+<span class="w">        </span>-i/--inputs<span class="w"> </span>any<span class="w"> </span>3g2<span class="w"> </span>3gp<span class="w"> </span>amv<span class="w"> </span>asf<span class="w"> </span>avi<span class="w"> </span>dav<span class="w"> </span>divx<span class="w"> </span>dv<span class="w"> </span>f4v<span class="w"> </span>flv<span class="w"> </span>gif<span class="w"> </span>m1v<span class="w"> </span>m2p<span class="w"> </span>m2t
+<span class="w">                    </span>m2ts<span class="w"> </span>m2v<span class="w"> </span>m4p<span class="w"> </span>m4v<span class="w"> </span>mkv<span class="w"> </span>mov<span class="w"> </span>mp4<span class="w"> </span>mpe<span class="w"> </span>mpeg<span class="w"> </span>mpg<span class="w"> </span>mpv<span class="w"> </span>mts<span class="w"> </span>mxf<span class="w"> </span>ogm
+<span class="w">                    </span>ogv<span class="w"> </span>qt<span class="w"> </span>rm<span class="w"> </span>rmvb<span class="w"> </span>swf<span class="w"> </span>tod<span class="w"> </span>ts<span class="w"> </span>vid<span class="w"> </span>vob<span class="w"> </span>webm<span class="w"> </span>wm<span class="w"> </span>wmv<span class="w"> </span>wtv
+<span class="w">    </span><span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-fl/--filters<span class="w"> </span>fferror<span class="w"> </span>old<span class="w"> </span>lowres<span class="w"> </span>hd<span class="w"> </span>720p<span class="w"> </span>1080p<span class="w"> </span>uhd<span class="w"> </span>mpeg<span class="w"> </span>mpeg4<span class="w"> </span>x264<span class="w"> </span>wmv3<span class="w"> </span>wmv<span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-o/--outputs<span class="w"> </span>mkv/mp4<span class="w"> </span>x265/av1<span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-p/--printop<span class="w"> </span>list<span class="w"> </span>formatted<span class="w"> </span>verbose<span class="o">]</span>
@@ -54,6 +58,7 @@ mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w">
 <p><strong>Options:</strong></p>
 <ul class="simple">
 <li><p><cite>-del</cite> or <cite>–delete</cite>: Delete found results after successful operations.</p></li>
+<li><p><cite>-delr</cite> or <cite>–delete-on-reduce</cite>: Delete the original post conversion only if the new file is smaller. <strong>Use with caution</strong>.</p></li>
 <li><p><cite>-i &lt;input&gt;</cite> or <cite>–inputs &lt;input&gt;</cite>: Specify input file formats (default: <cite>any</cite>).</p></li>
 <li><p><cite>-fl &lt;filter&gt;</cite> or <cite>–filters &lt;filter&gt;</cite>: Apply filters to the selection of videos.</p></li>
 <li><p><cite>-o &lt;output&gt;</cite> or <cite>–outputs &lt;output&gt;</cite>: Specify output formats (default: <cite>mkv</cite>, <cite>x265</cite>).</p></li>
@@ -77,8 +82,8 @@ mediacurator<span class="w"> </span>list<span class="w"> </span>--filters<span c
 <span class="c1"># Convert all videos with the MPEG4 codec to MP4 using the AV1 codec and delete the originals</span>
 mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span class="w"> </span>--filters<span class="w"> </span>mpeg4<span class="w"> </span>--outputs<span class="w"> </span>av1,mp4<span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/Movies/&quot;</span>
 
-<span class="c1"># Convert any video with AVI or MPG extensions, print formatted text including FFmpeg&#39;s output, and then delete the originals</span>
-mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span class="w"> </span>--inputs<span class="w"> </span>avi,mpg<span class="w"> </span>--printop<span class="w"> </span>formatted,verbose<span class="w"> </span>--dirs<span class="w"> </span>/mnt/media/
+<span class="c1"># Convert any video with AVI or MPG extensions, print formatted text including FFmpeg&#39;s output, and then delete the originals if size was reduced</span>
+mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete-on-reduce<span class="w"> </span>--inputs<span class="w"> </span>avi,mpg<span class="w"> </span>--printop<span class="w"> </span>formatted,verbose<span class="w"> </span>--dirs<span class="w"> </span>/mnt/media/
 </pre></div>
 </div>
 <p>For more examples, see <a class="reference internal" href="use_cases.html"><span class="doc">Use cases</span></a>.</p>
@@ -115,6 +120,7 @@ mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.2-changelog.html">mediacurator 1.0.2 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Legacy Usage:</span></p>
@@ -176,7 +182,7 @@ mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span
       &#169;2020, Fabrice Quenneville.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
