@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>mediacurator 1.0.2 Release Notes &#8212; mediacurator  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d9b65b63" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mediacurator 1.0.1 Release Notes" href="1.0.1-changelog.html" />
+    <link rel="prev" title="Errors" href="../usage/errors.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="mediacurator-1-0-2-release-notes">
+<h1>mediacurator 1.0.2 Release Notes<a class="headerlink" href="#mediacurator-1-0-2-release-notes" title="Link to this heading">¶</a></h1>
+<section id="highlights">
+<h2>Highlights<a class="headerlink" href="#highlights" title="Link to this heading">¶</a></h2>
+<p>This release fixes a data-loss bug in conversions, makes deleting originals much safer, adds AV2 support (ready for when ffmpeg ships an AV2 encoder), and makes library scanning and AV1 encoding dramatically faster.</p>
+</section>
+<section id="dropped-support">
+<h2>Dropped Support<a class="headerlink" href="#dropped-support" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>None. The command structure introduced in 1.0.1 is unchanged.</p></li>
+</ul>
+</section>
+<section id="compatibility-notes">
+<h2>Compatibility Notes<a class="headerlink" href="#compatibility-notes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>This is a patch release: no commands or options were removed or renamed.</p></li>
+<li><p>Behavior changes to be aware of:</p>
+<ul>
+<li><p>Unknown values passed to <code class="docutils literal notranslate"><span class="pre">--filters</span></code> now stop the program with an error that lists the valid filters. They used to be silently ignored, which could select every video (dangerous together with <code class="docutils literal notranslate"><span class="pre">--delete</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--delete</span></code> now keeps the original file when the converted file shows errors the original did not have.</p></li>
+<li><p>AV1 conversions now use the <code class="docutils literal notranslate"><span class="pre">libsvtav1</span></code> encoder instead of <code class="docutils literal notranslate"><span class="pre">libaom-av1</span></code>, so ffmpeg must be built with <code class="docutils literal notranslate"><span class="pre">--enable-libsvtav1</span></code>. <code class="docutils literal notranslate"><span class="pre">-crf</span> <span class="pre">30</span></code> is unchanged, but the two encoders do not produce identical quality at the same CRF: review the output of a short sample before converting a whole library.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--del</span></code> (two dashes) is no longer accepted as an abbreviation of <code class="docutils literal notranslate"><span class="pre">--delete</span></code>, because it is now ambiguous with <code class="docutils literal notranslate"><span class="pre">--delete-on-reduce</span></code>. <code class="docutils literal notranslate"><span class="pre">--delete</span></code> and the short form <code class="docutils literal notranslate"><span class="pre">-del</span></code> (one dash) are unchanged.</p></li>
+<li><p>Errors now exit with a non-zero status code (previously some exited with 0).</p></li>
+</ul>
+</li>
+</ul>
+<section id="python-support">
+<h3>Python Support<a class="headerlink" href="#python-support" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><cite>mediacurator</cite> has been tested on Python 3.12.6.</p></li>
+</ul>
+</section>
+<section id="ffmpeg-support">
+<h3>FFMPEG Support<a class="headerlink" href="#ffmpeg-support" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><cite>mediacurator</cite> has been tested to work with FFMPEG version 7.1.5.</p></li>
+</ul>
+</section>
+<section id="os-support">
+<h3>OS Support<a class="headerlink" href="#os-support" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><cite>mediacurator</cite> has been tested to work on various GNU/Linux distributions as well as Windows.</p></li>
+</ul>
+</section>
+</section>
+<section id="new-features">
+<h2>New Features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h2>
+<ul>
+<li><p><strong>AV2 Support</strong>: Added <code class="docutils literal notranslate"><span class="pre">av2</span></code> as an <code class="docutils literal notranslate"><span class="pre">--outputs</span></code> value and as a <code class="docutils literal notranslate"><span class="pre">--filters</span></code> value.</p>
+<ul class="simple">
+<li><p>The AV2 encoder is detected at runtime by asking ffmpeg (<code class="docutils literal notranslate"><span class="pre">ffmpeg</span> <span class="pre">-encoders</span></code>), so no encoder name is hardcoded and support starts working as soon as an ffmpeg build includes one.</p></li>
+<li><p>If ffmpeg has no AV2 encoder (none ships at the time of this release), <code class="docutils literal notranslate"><span class="pre">convert</span> <span class="pre">--outputs</span> <span class="pre">av2</span></code> exits immediately with a clear error, before scanning the library. It no longer silently falls back to x265.</p></li>
+<li><p>When several outputs are given, the target codec is chosen in the order <code class="docutils literal notranslate"><span class="pre">av2</span></code>, <code class="docutils literal notranslate"><span class="pre">av1</span></code>, <code class="docutils literal notranslate"><span class="pre">x265</span></code>.</p></li>
+<li><p>AV2 files count as modern codecs and are not matched by the <code class="docutils literal notranslate"><span class="pre">old</span></code> filter.</p></li>
+</ul>
+</li>
+<li><p><strong>New Filter Aliases</strong>: <code class="docutils literal notranslate"><span class="pre">4k</span></code> and <code class="docutils literal notranslate"><span class="pre">2160p</span></code> are now accepted as equivalents of <code class="docutils literal notranslate"><span class="pre">uhd</span></code>.</p></li>
+<li><p><strong>Conditional Deletion</strong>: New <code class="docutils literal notranslate"><span class="pre">-delr</span></code> / <code class="docutils literal notranslate"><span class="pre">--delete-on-reduce</span></code> option for <code class="docutils literal notranslate"><span class="pre">convert</span></code>: the original is deleted only if the converted file is strictly smaller (compared in bytes). It cannot be combined with <code class="docutils literal notranslate"><span class="pre">--delete</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete-on-reduce<span class="w"> </span>--filters<span class="w"> </span>old<span class="w"> </span>--outputs<span class="w"> </span>av1<span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>More Input Formats</strong>: <code class="docutils literal notranslate"><span class="pre">--inputs</span></code> and directory scans now recognize: <code class="docutils literal notranslate"><span class="pre">3g2,</span> <span class="pre">amv,</span> <span class="pre">dav,</span> <span class="pre">m1v,</span> <span class="pre">m2p,</span> <span class="pre">m2t,</span> <span class="pre">m2v,</span> <span class="pre">m4p,</span> <span class="pre">mpe,</span> <span class="pre">mpv,</span> <span class="pre">mxf,</span> <span class="pre">qt,</span> <span class="pre">rmvb,</span> <span class="pre">tod,</span> <span class="pre">wm,</span> <span class="pre">wtv</span></code>.</p></li>
+<li><p><strong>Failure Explanations</strong>: When a conversion fails, the reason reported by ffmpeg is now displayed (for example an unsupported subtitle codec) instead of only an exit status.</p></li>
+<li><p><strong>Codec-Tagged Output Names</strong>: When the output name already exists, the new file is tagged <code class="docutils literal notranslate"><span class="pre">[HEVC]</span></code>, <code class="docutils literal notranslate"><span class="pre">[AV1]</span></code> or <code class="docutils literal notranslate"><span class="pre">[AV2]</span></code> according to the target codec (it was always <code class="docutils literal notranslate"><span class="pre">[HEVC]</span></code>).</p></li>
+</ul>
+</section>
+<section id="improvements">
+<h2>Improvements<a class="headerlink" href="#improvements" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Faster Scanning</strong>: Directories are now walked once instead of many times, and videos are probed with up to 8 parallel ffprobe processes. This matters most on large libraries and network drives.</p></li>
+<li><p><strong>Much Faster AV1</strong>: AV1 conversions now use <code class="docutils literal notranslate"><span class="pre">libsvtav1</span></code>.</p></li>
+<li><p><strong>Safer Deletion</strong>: With <code class="docutils literal notranslate"><span class="pre">--delete</span></code>, the original is only removed after the converted file has been read back without <em>new</em> errors. Errors the original already had (for example corrupt audio, which is copied as-is) no longer block the deletion, and a note is printed in that case. A conversion that produces no output or an empty file is now treated as a failure.</p></li>
+<li><p><strong>File Permissions</strong>: Converted files now inherit the permissions of the original instead of being made world-writable (<code class="docutils literal notranslate"><span class="pre">0777</span></code>).</p></li>
+<li><p><strong>Clearer Messages</strong>: Cleaning up after a failed or cancelled conversion now reads “Removed partial output” instead of “Successfully deleted”. The confirmation prompt keeps its color when it asks again after an invalid answer.</p></li>
+<li><p><strong>Environment Checks</strong>: <code class="docutils literal notranslate"><span class="pre">ffprobe</span></code> is now checked at startup alongside <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>.</p></li>
+<li><p><strong>Code Quality</strong>: Filter handling rewritten with lookup tables (behavior unchanged, verified against the previous implementation on thousands of random filter combinations), no more mutable default arguments, and free output names are found with a loop instead of recursion.</p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<h2>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Failed conversions reported as success (verbose mode)</strong>: With <code class="docutils literal notranslate"><span class="pre">--printop</span> <span class="pre">verbose</span></code>, a failed ffmpeg run was treated as successful. Combined with <code class="docutils literal notranslate"><span class="pre">--delete</span></code>, the original could be deleted and only a broken partial file left behind. Failures are now detected in every print mode and the original is kept.</p></li>
+<li><p><strong>.3gp files were never found</strong>: The glob pattern for 3gp files was wrong.</p></li>
+<li><p><strong>Crash on relative paths</strong>: <code class="docutils literal notranslate"><span class="pre">--files</span> <span class="pre">video.mp4</span></code> or <code class="docutils literal notranslate"><span class="pre">--dirs</span> <span class="pre">.</span></code> could crash because the path had no directory separator.</p></li>
+<li><p><strong>Odd output names</strong>: Free-name detection could be confused by dots in directory names or files without an extension.</p></li>
+<li><p><strong>File size detection</strong>: Now handles the correct error type when a file cannot be read.</p></li>
+</ul>
+</section>
+<section id="known-issues">
+<h2>Known Issues<a class="headerlink" href="#known-issues" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Subtitle streams in the <code class="docutils literal notranslate"><span class="pre">mov_text</span></code> format (common in MP4 and M4V files) cannot be copied into Matroska, so converting such files to mkv fails with ffmpeg error 218 (“Subtitle codec 94213 is not supported”). The reason is now shown, but the conversion itself still fails.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">mkv/mp4</span></code> choice in <code class="docutils literal notranslate"><span class="pre">--outputs</span></code> currently has no effect: converted files are always written as mkv.</p></li>
+</ul>
+</section>
+<section id="changes">
+<h2>Changes<a class="headerlink" href="#changes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>AV1 encoder changed from <code class="docutils literal notranslate"><span class="pre">libaom-av1</span></code> to <code class="docutils literal notranslate"><span class="pre">libsvtav1</span></code> (see Compatibility Notes).</p></li>
+<li><p>Failed conversions now print ffmpeg’s explanation after the command and exit status.</p></li>
+</ul>
+</section>
+<section id="deprecations">
+<h2>Deprecations<a class="headerlink" href="#deprecations" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>None.</p></li>
+</ul>
+</section>
+<section id="future-changes">
+<h2>Future Changes<a class="headerlink" href="#future-changes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Allow ffmpeg encoding arguments (such as CRF and preset) to be set from the command line.</p></li>
+<li><p>Verbosity levels (<code class="docutils literal notranslate"><span class="pre">-v</span></code>, <code class="docutils literal notranslate"><span class="pre">-vv</span></code>, <code class="docutils literal notranslate"><span class="pre">-vvv</span></code>) instead of a single verbose mode, and hiding the ffmpeg banner by default.</p></li>
+<li><p>Convert <code class="docutils literal notranslate"><span class="pre">mov_text</span></code> subtitles to <code class="docutils literal notranslate"><span class="pre">srt</span></code> (or skip unsupported ones) so those files can be converted to mkv.</p></li>
+<li><p>AV2 encoding tests once ffmpeg ships an AV2 encoder.</p></li>
+<li><p>Plan to add more filters for enhanced media management.</p></li>
+<li><p>Preparing the API for potential GUI development.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/mclogo4x.png" alt="Logo of mediacurator"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">mediacurator</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/warnings.html">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/use_cases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/errors.html">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mediacurator 1.0.2 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Usage:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/warnings.html">Warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/manual.html">Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/use_cases.html">Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legacy_usage/errors.html">Errors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Legacy Release Notes:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="0.0.13-changelog.html">MediaCurator 0.0.13 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.12-changelog.html">MediaCurator 0.0.12 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.11-changelog.html">MediaCurator 0.0.11 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.10-changelog.html">MediaCurator 0.0.10 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.9-changelog.html">MediaCurator 0.0.9 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.8-changelog.html">MediaCurator 0.0.8 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.7-changelog.html">MediaCurator 0.0.7 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.6-changelog.html">MediaCurator 0.0.6 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.5-changelog.html">MediaCurator 0.0.5 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.4-changelog.html">MediaCurator 0.0.4 Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0.0.1-changelog.html">MediaCurator 0.0.1 Release Notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../usage/errors.html" title="previous chapter">Errors</a></li>
+      <li>Next: <a href="1.0.1-changelog.html" title="next chapter">mediacurator 1.0.1 Release Notes</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2020, Fabrice Quenneville.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../_sources/releasenotes/1.0.2-changelog.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

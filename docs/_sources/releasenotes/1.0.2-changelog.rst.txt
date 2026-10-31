@@ -1,0 +1,95 @@
+========================================
+mediacurator 1.0.2 Release Notes
+========================================
+
+Highlights
+==========
+This release fixes a data-loss bug in conversions, makes deleting originals much safer, adds AV2 support (ready for when ffmpeg ships an AV2 encoder), and makes library scanning and AV1 encoding dramatically faster.
+
+Dropped Support
+===============
+- None. The command structure introduced in 1.0.1 is unchanged.
+
+Compatibility Notes
+===================
+- This is a patch release: no commands or options were removed or renamed.
+- Behavior changes to be aware of:
+
+  - Unknown values passed to ``--filters`` now stop the program with an error that lists the valid filters. They used to be silently ignored, which could select every video (dangerous together with ``--delete``).
+  - ``--delete`` now keeps the original file when the converted file shows errors the original did not have.
+  - AV1 conversions now use the ``libsvtav1`` encoder instead of ``libaom-av1``, so ffmpeg must be built with ``--enable-libsvtav1``. ``-crf 30`` is unchanged, but the two encoders do not produce identical quality at the same CRF: review the output of a short sample before converting a whole library.
+  - ``--del`` (two dashes) is no longer accepted as an abbreviation of ``--delete``, because it is now ambiguous with ``--delete-on-reduce``. ``--delete`` and the short form ``-del`` (one dash) are unchanged.
+  - Errors now exit with a non-zero status code (previously some exited with 0).
+
+Python Support
+--------------
+- `mediacurator` has been tested on Python 3.12.6.
+
+FFMPEG Support
+--------------
+- `mediacurator` has been tested to work with FFMPEG version 7.1.5.
+
+OS Support
+----------
+- `mediacurator` has been tested to work on various GNU/Linux distributions as well as Windows.
+
+New Features
+============
+- **AV2 Support**: Added ``av2`` as an ``--outputs`` value and as a ``--filters`` value.
+
+  - The AV2 encoder is detected at runtime by asking ffmpeg (``ffmpeg -encoders``), so no encoder name is hardcoded and support starts working as soon as an ffmpeg build includes one.
+  - If ffmpeg has no AV2 encoder (none ships at the time of this release), ``convert --outputs av2`` exits immediately with a clear error, before scanning the library. It no longer silently falls back to x265.
+  - When several outputs are given, the target codec is chosen in the order ``av2``, ``av1``, ``x265``.
+  - AV2 files count as modern codecs and are not matched by the ``old`` filter.
+
+- **New Filter Aliases**: ``4k`` and ``2160p`` are now accepted as equivalents of ``uhd``.
+- **Conditional Deletion**: New ``-delr`` / ``--delete-on-reduce`` option for ``convert``: the original is deleted only if the converted file is strictly smaller (compared in bytes). It cannot be combined with ``--delete``.
+
+  .. code-block:: bash
+
+      mediacurator convert --delete-on-reduce --filters old --outputs av1 --dirs "/mnt/media/"
+
+- **More Input Formats**: ``--inputs`` and directory scans now recognize: ``3g2, amv, dav, m1v, m2p, m2t, m2v, m4p, mpe, mpv, mxf, qt, rmvb, tod, wm, wtv``.
+- **Failure Explanations**: When a conversion fails, the reason reported by ffmpeg is now displayed (for example an unsupported subtitle codec) instead of only an exit status.
+- **Codec-Tagged Output Names**: When the output name already exists, the new file is tagged ``[HEVC]``, ``[AV1]`` or ``[AV2]`` according to the target codec (it was always ``[HEVC]``).
+
+Improvements
+============
+- **Faster Scanning**: Directories are now walked once instead of many times, and videos are probed with up to 8 parallel ffprobe processes. This matters most on large libraries and network drives.
+- **Much Faster AV1**: AV1 conversions now use ``libsvtav1``.
+- **Safer Deletion**: With ``--delete``, the original is only removed after the converted file has been read back without *new* errors. Errors the original already had (for example corrupt audio, which is copied as-is) no longer block the deletion, and a note is printed in that case. A conversion that produces no output or an empty file is now treated as a failure.
+- **File Permissions**: Converted files now inherit the permissions of the original instead of being made world-writable (``0777``).
+- **Clearer Messages**: Cleaning up after a failed or cancelled conversion now reads "Removed partial output" instead of "Successfully deleted". The confirmation prompt keeps its color when it asks again after an invalid answer.
+- **Environment Checks**: ``ffprobe`` is now checked at startup alongside ``ffmpeg``.
+- **Code Quality**: Filter handling rewritten with lookup tables (behavior unchanged, verified against the previous implementation on thousands of random filter combinations), no more mutable default arguments, and free output names are found with a loop instead of recursion.
+
+Bug Fixes
+=========
+- **Failed conversions reported as success (verbose mode)**: With ``--printop verbose``, a failed ffmpeg run was treated as successful. Combined with ``--delete``, the original could be deleted and only a broken partial file left behind. Failures are now detected in every print mode and the original is kept.
+- **.3gp files were never found**: The glob pattern for 3gp files was wrong.
+- **Crash on relative paths**: ``--files video.mp4`` or ``--dirs .`` could crash because the path had no directory separator.
+- **Odd output names**: Free-name detection could be confused by dots in directory names or files without an extension.
+- **File size detection**: Now handles the correct error type when a file cannot be read.
+
+Known Issues
+============
+- Subtitle streams in the ``mov_text`` format (common in MP4 and M4V files) cannot be copied into Matroska, so converting such files to mkv fails with ffmpeg error 218 ("Subtitle codec 94213 is not supported"). The reason is now shown, but the conversion itself still fails.
+- The ``mkv/mp4`` choice in ``--outputs`` currently has no effect: converted files are always written as mkv.
+
+Changes
+=======
+- AV1 encoder changed from ``libaom-av1`` to ``libsvtav1`` (see Compatibility Notes).
+- Failed conversions now print ffmpeg's explanation after the command and exit status.
+
+Deprecations
+============
+- None.
+
+Future Changes
+==============
+- Allow ffmpeg encoding arguments (such as CRF and preset) to be set from the command line.
+- Verbosity levels (``-v``, ``-vv``, ``-vvv``) instead of a single verbose mode, and hiding the ffmpeg banner by default.
+- Convert ``mov_text`` subtitles to ``srt`` (or skip unsupported ones) so those files can be converted to mkv.
+- AV2 encoding tests once ffmpeg ships an AV2 encoder.
+- Plan to add more filters for enhanced media management.
+- Preparing the API for potential GUI development.

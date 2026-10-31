@@ -1,4 +1,11 @@
-mediacurator (1.0.1-1) UNRELEASED; urgency=low
+mediacurator (1.0.2-1) stable; urgency=low
+
+  * New upstream release, refactor with new codecs and delete options.
+  * Modernize packaging with pyproject.toml and remove setup.py/MANIFEST.in.
+
+ -- Fabrice Quenneville <fabrice@fabq.ca>  Fri, 30 Oct 2026 22:21:26 -0400
+
+mediacurator (1.0.1-1) stable; urgency=low
 
   * Initial release of mediacurator 1.0.1.
 
