@@ -2,7 +2,11 @@ Source: mediacurator
 Section: utils
 Priority: optional
 Maintainer: Fabrice Quenneville <fabrice@fabq.ca>
-Build-Depends: debhelper-compat (= 13), dh-python, python3-all
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3-all,
+               python3-setuptools,
+               pybuild-plugin-pyproject
 Standards-Version: 4.6.0
 Homepage: https://fabquenneville.github.io/mediacurator
 Vcs-Git: https://github.com/fabquenneville/mediacurator
