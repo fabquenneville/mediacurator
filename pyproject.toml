@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mediacurator"
+version = "1.0.2"
+description = "mediacurator is a Python command line tool to manage a media database."
+readme = "README.md"
+requires-python = ">=3.6"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Fabrice Quenneville", email = "fabrice@fabq.ca" }
+]
+keywords = [
+    "codecs",
+    "filters",
+    "video",
+    "x265",
+    "hevc",
+    "av1", 
+    "media-database",
+    "python-command",
+    "multimedia",
+    "video-processing",
+]
+classifiers = [
+    "Topic :: Multimedia :: Video :: Conversion",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+]
+dependencies = [
+    "pathlib", 
+    "colorama", 
+    "argcomplete",
+]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/fabquenneville/mediacurator/issues"
+"Documentation" = "https://fabquenneville.github.io/mediacurator/"
+"Source Code" = "https://github.com/fabquenneville/mediacurator"
+
+[project.scripts]
+mediacurator = "mediacurator.mediacurator:main"
+
+[tool.setuptools.packages.find]
+include = ["mediacurator", "mediacurator.*"]
