@@ -41,11 +41,19 @@ def load_arguments():
     )
 
     # Add other arguments with both short and long options, including defaults
-    parser.add_argument(
+    # --delete and --delete-on-reduce are alternatives, not combinable
+    delete_group = parser.add_mutually_exclusive_group()
+    delete_group.add_argument(
         "-del",
         "--delete",
         action="store_true",
         help="Delete found results after successful operations",
+    )
+    delete_group.add_argument(
+        "-delr",
+        "--delete-on-reduce",
+        action="store_true",
+        help="With convert: delete the original only if the new file is smaller",
     )
 
     parser.add_argument(
@@ -114,11 +122,18 @@ def load_arguments():
 
     args = parser.parse_args()
 
-    # Confirm with the user about deletion if delete option is selected
-    if args.delete:
+    if args.delete_on_reduce and args.command != "convert":
+        parser.error("--delete-on-reduce only applies to the convert command")
+
+    # Confirm with the user about deletion if a delete option is selected
+    if args.delete or args.delete_on_reduce:
         print(f"{cyellow}WARNING: Delete option selected!{creset}")
+        if args.delete:
+            question = "Are you sure you wish to delete all found results after selected operations are successful? [Y/N] ?"
+        else:
+            question = "Are you sure you wish to delete each original that is successfully converted into a smaller file? [Y/N] ?"
         if not args.yes and not user_confirm(
-            "Are you sure you wish to delete all found results after selected operations are successful? [Y/N] ?",
+            question,
             color="yellow",
         ):
             print(f"{cgreen}Exiting!{creset}")

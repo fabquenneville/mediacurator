@@ -94,6 +94,7 @@ def main():
             formatted=formatted,
             verbose="verbose" in arguments.printop,
             delete=arguments.delete,
+            delete_on_reduce=arguments.delete_on_reduce,
         )
 
 

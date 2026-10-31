@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """This module defines the Video class, which contains information and methods for video files."""
 
-from .tools import deletefile, findfreename, find_encoder
+from .tools import findfreename, find_encoder
+import re
 import shutil
 import subprocess
 import os
@@ -19,6 +20,32 @@ creset = colorama.Fore.RESET
 
 # Constants
 AV2_QUALITY_ARGS = ["-crf", "30"]
+# Lines of ffmpeg output that are progress or encoder chatter, not a failure reason
+FFMPEG_NOISE = re.compile(r"^(frame=|size=|x265 \[|Svt\[)")
+
+
+def ffmpeg_failure_reason(output, max_lines=8):
+    """Extracts the lines explaining why ffmpeg failed from its captured output.
+
+    Skips the banner and stream info (everything up to ffmpeg's 'Press [q]'
+    line) as well as progress/encoder chatter, and keeps the last few lines.
+
+    Args:
+        output (bytes): The captured ffmpeg output (stdout + stderr).
+        max_lines (int): The maximum number of lines to return.
+    Returns:
+        list: The relevant lines, oldest first.
+    """
+    lines = [
+        line.strip()
+        for line in re.split(r"[\r\n]+", output.decode(errors="replace"))
+        if line.strip()
+    ]
+    for index in range(len(lines) - 1, -1, -1):
+        if lines[index].startswith("Press [q]"):
+            lines = lines[index + 1 :]
+            break
+    return [line for line in lines if not FFMPEG_NOISE.match(line)][-max_lines:]
 
 
 class Video:
@@ -173,7 +200,11 @@ class Video:
         """Removes the half-written output file after a failed or cancelled conversion."""
         partial = self.path + self.filename_tmp
         if os.path.exists(partial):
-            deletefile(partial)
+            try:
+                os.remove(partial)
+                print(f"{cyellow}Removed partial output: {partial}{creset}")
+            except OSError:
+                print(f"{cred}Could not remove partial output: {partial}{creset}")
         self.filename_tmp = ""
 
     def convert(
@@ -266,12 +297,17 @@ class Video:
 
         try:
             if verbose:
+                # To be moved to -vv
                 subprocess.run(args, check=True)
             else:
                 subprocess.check_output(args, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             self._discard_partial_output()
             print(f"{cred}Conversion failed {e}{creset}")
+            # In non-verbose mode ffmpeg's output was captured: show why it failed, to be moved to -v
+            if e.output:
+                for line in ffmpeg_failure_reason(e.output):
+                    print(f"{cred}    {line}{creset}")
             return False
         except KeyboardInterrupt:
             print(f"{cyellow}Conversion cancelled, cleaning up...{creset}")

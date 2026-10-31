@@ -19,6 +19,7 @@ colorama.init()
 ccyan = colorama.Fore.CYAN
 cgreen = colorama.Fore.GREEN
 cred = colorama.Fore.RED
+cyellow = colorama.Fore.YELLOW
 creset = colorama.Fore.RESET
 
 # Constants
@@ -94,6 +95,13 @@ DEFINITION_FILTERS = {
 VALID_FILTERS = (
     frozenset(CODEC_FILTERS) | frozenset(DEFINITION_FILTERS) | {"old", "fferror"}
 )
+
+
+def human_size(size):
+    """Formats a size in bytes as MB, or KB for files under 1 MB."""
+    if size >= 1024 * 1024:
+        return f"{size / 1024 / 1024:.1f} MB"
+    return f"{size / 1024:.0f} KB"
 
 
 def error_lines(error):
@@ -220,7 +228,6 @@ class MediaLibrary:
             for i, (path, video) in enumerate(zip(videolist, results), 1):
                 if verbose:
                     print(f"{int(i / total * 100)}% complete", end="\r")
-
                 self.videos[path] = video
 
     def filter_videos(self, verbose=False):
@@ -307,6 +314,7 @@ class MediaLibrary:
         formatted: bool = False,
         verbose: bool = False,
         delete: bool = False,
+        delete_on_reduce: bool = False,
     ):
         counter = 0
 
@@ -351,17 +359,37 @@ class MediaLibrary:
 
                 # If deletion is requested, delete the original, but only once the
                 # new file has been read back without new errors
-                if delete:
+                if delete or delete_on_reduce:
                     original = self.videos[filepath]
                     newvideo = self.videos[newfpath]
                     introduced = error_lines(newvideo.error) - error_lines(
                         original.error
                     )
+
+                    sizes = None
+                    if delete_on_reduce:
+                        try:
+                            sizes = (
+                                os.path.getsize(filepath),
+                                os.path.getsize(newfpath),
+                            )
+                        except OSError:
+                            pass
+
                     if introduced or not newvideo.codec:
                         print(
                             f"{cred}\nKeeping the original: the new file failed verification{creset}"
                         )
                         for line in sorted(introduced):
                             print(f"{cred}    {line}{creset}")
+                    elif delete_on_reduce and (sizes is None or sizes[1] >= sizes[0]):
+                        detail = (
+                            "could not compare file sizes"
+                            if sizes is None
+                            else f"{human_size(sizes[1])} vs {human_size(sizes[0])}"
+                        )
+                        print(
+                            f"{cyellow}Keeping the original: the new file is not smaller ({detail}){creset}"
+                        )
                     else:
                         self.unwatch(filepath, delete=True)
