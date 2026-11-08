@@ -37,6 +37,7 @@ Documentation
    :maxdepth: 1
    :caption: Release Notes:
 
+   releasenotes/1.1.1-changelog
    releasenotes/1.0.2-changelog
    releasenotes/1.0.1-changelog
 

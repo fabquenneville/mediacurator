@@ -315,6 +315,8 @@ class MediaLibrary:
         verbose: bool = False,
         delete: bool = False,
         delete_on_reduce: bool = False,
+        preset=None,
+        crf=None,
     ):
         counter = 0
 
@@ -337,7 +339,9 @@ class MediaLibrary:
             print(f"{cgreen}Converting, please wait...{creset}", end="\r")
 
             # Perform the conversion
-            if self.videos[filepath].convert(vcodec, verbose=verbose):
+            if self.videos[filepath].convert(
+                vcodec, verbose=verbose, preset=preset, crf=crf
+            ):
                 # Mark video as processed
                 self.videos[filepath].operate = False
 

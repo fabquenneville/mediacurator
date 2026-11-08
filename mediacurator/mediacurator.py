@@ -16,11 +16,21 @@ import sys
 # Normal import
 try:
     from mediacurator.library.medialibrary import MediaLibrary
-    from mediacurator.library.tools import check_ffmpeg, find_encoder, load_arguments
+    from mediacurator.library.tools import (
+        check_ffmpeg,
+        check_quality_options,
+        find_encoder,
+        load_arguments,
+    )
 # Allow local import for development purposes
 except ModuleNotFoundError:
     from library.medialibrary import MediaLibrary
-    from library.tools import check_ffmpeg, find_encoder, load_arguments
+    from library.tools import (
+        check_ffmpeg,
+        check_quality_options,
+        find_encoder,
+        load_arguments,
+    )
 
 # Import colorama for colored output
 import colorama
@@ -57,6 +67,12 @@ def main():
         vcodec = "av1"
     else:
         vcodec = "x265"
+
+    if arguments.command == "convert":
+        error = check_quality_options(vcodec, arguments.preset, arguments.crf)
+        if error:
+            print(f"{cred}ERROR: {error}{creset}")
+            sys.exit(1)
 
     if arguments.command == "convert" and vcodec == "av2" and not find_encoder("av2"):
         print(
@@ -95,6 +111,8 @@ def main():
             verbose="verbose" in arguments.printop,
             delete=arguments.delete,
             delete_on_reduce=arguments.delete_on_reduce,
+            preset=arguments.preset,
+            crf=arguments.crf,
         )
 
 

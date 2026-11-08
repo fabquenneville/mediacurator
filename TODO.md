@@ -12,7 +12,7 @@
 - More filters
 - Handle subtitles
 - Verbosity levels: -v -vv -vvv
-- CLI arguments passed to FFMpeg like crf and preset
+- Add `--bitdepth` / `-bd` option
 - Prepare API for GUI
 - Make unittests for all methods/functions
 - Add priorities ?

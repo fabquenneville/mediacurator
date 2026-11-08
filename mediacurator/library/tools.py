@@ -25,6 +25,20 @@ cyellow = colorama.Fore.YELLOW
 creset = colorama.Fore.RESET
 
 
+X265_PRESETS = (
+    "ultrafast",
+    "superfast",
+    "veryfast",
+    "faster",
+    "fast",
+    "medium",
+    "slow",
+    "slower",
+    "veryslow",
+    "placebo",
+)
+
+
 def load_arguments():
     """Get/load command parameters
 
@@ -61,6 +75,22 @@ def load_arguments():
         "--yes",
         action="store_true",
         help="skip confirmation prompts",
+    )
+
+    parser.add_argument(
+        "--preset",
+        type=str,
+        default=None,
+        help="With convert: encoder preset (x265: ultrafast..placebo, default slow; "
+        "AV1: 0..13, default 6)",
+    )
+
+    parser.add_argument(
+        "--crf",
+        type=int,
+        default=None,
+        help="With convert: constant rate factor (x265: 0..51, default 28; "
+        "AV1: 1..63, default 30; AV2: default 30)",
     )
 
     parser.add_argument(
@@ -124,6 +154,9 @@ def load_arguments():
 
     if args.delete_on_reduce and args.command != "convert":
         parser.error("--delete-on-reduce only applies to the convert command")
+
+    if args.command != "convert" and (args.preset is not None or args.crf is not None):
+        parser.error("--preset and --crf only apply to the convert command")
 
     # Confirm with the user about deletion if a delete option is selected
     if args.delete or args.delete_on_reduce:
@@ -270,4 +303,31 @@ def find_encoder(codec):
         tag = re.search(r"\(codec (\S+?)\)", rest)
         if name == codec or (tag and tag.group(1) == codec):
             return name
+    return None
+
+
+def check_quality_options(vcodec, preset=None, crf=None):
+    """Checks a user-chosen --preset and --crf against the target codec.
+
+    Args:
+        vcodec (str): The target codec: av1, av2 or x265.
+        preset (str, optional): The requested preset.
+        crf (int, optional): The requested CRF.
+    Returns:
+        str: An error message, or None if the options are valid.
+    """
+    if preset is not None:
+        if vcodec == "x265":
+            if preset not in X265_PRESETS:
+                return f"Invalid --preset '{preset}' for x265. Choose one of: {', '.join(X265_PRESETS)}"
+        elif vcodec == "av1":
+            if not (preset.isdigit() and 0 <= int(preset) <= 13):
+                return f"Invalid --preset '{preset}' for AV1 (SVT-AV1). Choose a number from 0 to 13"
+        else:
+            return "--preset is not supported for AV2 yet, use --crf only"
+
+    if crf is not None:
+        limits = {"x265": (0, 51), "av1": (1, 63)}.get(vcodec)
+        if limits and not (limits[0] <= crf <= limits[1]):
+            return f"Invalid --crf {crf} for {vcodec}. Choose a value from {limits[0]} to {limits[1]}"
     return None

@@ -37,6 +37,7 @@ For detailed installation instructions, please visit the following links:
         [-fl/--filters fferror old lowres hd 720p 1080p 2160p uhd 4k mpeg mpeg4 x264 wmv3 wmv]
         [-o/--outputs mkv/mp4 x265/av1/av2]
         [-p/--printop list formatted verbose]
+        [--preset <name>] [--crf <value>]
         [-d/--dirs "/mnt/media/" "/mnt/media2/"]
         [-f/--files "file1.ext" "file2.ext"]
 ```
@@ -56,6 +57,8 @@ For detailed installation instructions, please visit the following links:
 - `-p <print_option>` or `--printop <print_option>`: Set print options (default: `list`).
 - `-f <file>` or `--files <file>`: Specify files to process.
 - `-d <directory>` or `--dirs <directory>`: Specify directories to process.
+- `--preset <name>`: Encoder preset for `convert` (x265 default: `medium`, av1 default: `6`).
+- `--crf <value>`: Constant rate factor for `convert` (x265 default: `28`, av1 default: `30`). Lower is higher quality and larger files.
 
 **For multiple files or filenames, use space-separated values ( ).**
 
@@ -77,6 +80,9 @@ mediacurator convert --delete --filters mpeg4 --outputs av1 mp4 --dirs "/mnt/med
 
 # Convert videos with AVI or MPG extensions, print formatted and verbose output, and delete originals if size was reduced
 mediacurator convert --delete-on-reduce --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
+
+# Convert to x265 with the slow preset and CRF 24 for higher quality
+mediacurator convert --filters old --preset slow --crf 24 --dirs "/mnt/media/"
 ```
 
 ## Contributing

@@ -19,9 +19,34 @@ cred = colorama.Fore.RED
 creset = colorama.Fore.RESET
 
 # Constants
-AV2_QUALITY_ARGS = ["-crf", "30"]
+# Default encoder settings per codec, overridable with --preset and --crf
+QUALITY_DEFAULTS = {
+    "av1": {"preset": "6", "crf": 30},
+    "av2": {"crf": 30},
+    "x265": {"preset": "medium", "crf": 28},
+}
 # Lines of ffmpeg output that are progress or encoder chatter, not a failure reason
 FFMPEG_NOISE = re.compile(r"^(frame=|size=|x265 \[|Svt\[)")
+
+
+def quality_args(vcodec, preset=None, crf=None):
+    """Builds the ffmpeg preset/crf arguments for a codec.
+
+    Args:
+        vcodec (str): The target codec: av1, av2 or x265.
+        preset (str, optional): User-chosen preset, overrides the default.
+        crf (int, optional): User-chosen CRF, overrides the default.
+    Returns:
+        list: The ffmpeg arguments, e.g. ["-preset", "medium", "-crf", "28"].
+    """
+    defaults = QUALITY_DEFAULTS[vcodec]
+    args = []
+    if "preset" in defaults:
+        chosen = preset if preset is not None else defaults["preset"]
+        args += ["-preset", str(chosen)]
+    chosen_crf = crf if crf is not None else defaults["crf"]
+    args += ["-crf", str(chosen_crf)]
+    return args
 
 
 def ffmpeg_failure_reason(output, max_lines=8):
@@ -213,6 +238,8 @@ class Video:
         acodec=False,
         extension="mkv",
         verbose=False,
+        preset=None,
+        crf=None,
     ):
         """
         Converts the original file to the requested format / codec,
@@ -223,6 +250,8 @@ class Video:
             acodec (bool): Currently not enabled, will be for audio codecs.
             extension (str): The new video container format and file extension.
             verbose (bool): A flag enabling verbosity.
+            preset (str, optional): Encoder preset, overrides the codec default.
+            crf (int, optional): Constant rate factor, overrides the codec default.
 
         Returns:
             bool: True if operation successful, False otherwise.
@@ -269,13 +298,13 @@ class Video:
 
         # Conversion options based on codec
         if vcodec == "av1":
-            args += ["-c:v", "libsvtav1", "-preset", "6", "-crf", "30"]
+            args += ["-c:v", "libsvtav1"] + quality_args("av1", preset, crf)
         elif vcodec == "av2":
-            args += ["-c:v", av2_encoder] + AV2_QUALITY_ARGS
+            args += ["-c:v", av2_encoder] + quality_args("av2", preset, crf)
         else:
             args += ["-c:v", "libx265"]
-            # Control quality with crf for x265
-            args += ["-preset", "medium", "-crf", "28"]
+            args += quality_args("x265", preset, crf)
+            args += ["-pix_fmt", "yuv420p10le"]
             # Add max_muxing_queue_size to avoid buffer overflows
             args += ["-max_muxing_queue_size", "1000"]
 
