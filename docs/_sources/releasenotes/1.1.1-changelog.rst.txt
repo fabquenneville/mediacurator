@@ -1,0 +1,71 @@
+========================================
+mediacurator 1.1.1 Release Notes
+========================================
+
+Highlights
+==========
+This release lets you set the encoder preset and quality (CRF) from the command line with ``--preset`` and ``--crf``, and switches x265 output to 10-bit.
+
+Dropped Support
+===============
+- None.
+
+Compatibility Notes
+===================
+- x265 output is now 10-bit (``yuv420p10le``). Earlier releases produced 8-bit output. Some older players and hardware decoders cannot play 10-bit HEVC.
+- Added ``--preset`` and ``--crf`` options to ``convert`` for overriding encoder defaults.
+
+Python Support
+--------------
+- `mediacurator` has been tested on Python 3.12.6.
+
+FFMPEG Support
+--------------
+- `mediacurator` has been tested to work with FFMPEG version 7.1.5.
+
+OS Support
+----------
+- `mediacurator` has been tested to work on various GNU/Linux distributions as well as Windows.
+
+New Features
+============
+- **Encoder quality options**: ``--preset`` and ``--crf`` override the encoder defaults for ``convert``.
+
+  .. code-block:: bash
+
+      mediacurator convert --delete --filters old --preset slow --crf 24 --dirs "/mnt/media/"
+
+- Values are checked against the target codec before the library is scanned:
+
+  - x265: presets ``ultrafast`` to ``placebo``, CRF 0 to 51.
+  - AV1: presets 0 to 13, CRF 1 to 63.
+  - AV2: ``--crf`` only, since no AV2 encoder ships yet.
+
+Improvements
+============
+- None.
+
+Bug Fixes
+=========
+- None.
+
+Known Issues
+============
+- Subtitle streams in the ``mov_text`` format (common in MP4 and M4V files) cannot be copied into Matroska, so converting such files to mkv fails with ffmpeg error 218 ("Subtitle codec 94213 is not supported"). The reason is now shown, but the conversion itself still fails.
+- The ``mkv/mp4`` choice in ``--outputs`` currently has no effect: converted files are always written as mkv.
+
+Changes
+=======
+- x265 output is 10-bit by default (see Compatibility Notes).
+
+Deprecations
+============
+- None.
+
+Future Changes
+==============
+- Verbosity levels (``-v``, ``-vv``, ``-vvv``) instead of a single verbose mode, and hiding the ffmpeg banner by default.
+- Convert ``mov_text`` subtitles to ``srt`` (or skip unsupported ones) so those files can be converted to mkv.
+- AV2 encoding tests once ffmpeg ships an AV2 encoder.
+- Plan to add more filters for enhanced media management.
+- Preparing the API for potential GUI development.

@@ -99,3 +99,20 @@ Convert any video with avi or mpg extensions, print formatted text including ffm
 .. code-block:: bash
 
     mediacurator convert --delete --inputs avi,mpg --printop formatted,verbose --dirs "/mnt/media/" "/mnt/media2/"
+
+.. _quality:
+
+Custom quality settings
+-----------------------
+
+Convert all videos with old codecs to `High Efficiency Video Coding <https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding>`_ with the slow preset and a lower CRF, for higher quality at a larger size
+
+.. code-block:: bash
+
+    mediacurator convert --delete --filters old --preset slow --crf 24 --dirs "/mnt/media/" "/mnt/media2/"
+
+Convert all videos with old codecs to AV1 with a higher CRF, to save more space
+
+.. code-block:: bash
+
+    mediacurator convert --filters old --outputs av1 --crf 35 --dirs "/mnt/media/" "/mnt/media2/"

@@ -108,6 +108,17 @@
 </pre></div>
 </div>
 </section>
+<section id="custom-quality-settings">
+<span id="quality"></span><h2>Custom quality settings<a class="headerlink" href="#custom-quality-settings" title="Link to this heading">¶</a></h2>
+<p>Convert all videos with old codecs to <a class="reference external" href="https://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">High Efficiency Video Coding</a> with the slow preset and a lower CRF, for higher quality at a larger size</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span class="w"> </span>--filters<span class="w"> </span>old<span class="w"> </span>--preset<span class="w"> </span>slow<span class="w"> </span>--crf<span class="w"> </span><span class="m">24</span><span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span>
+</pre></div>
+</div>
+<p>Convert all videos with old codecs to AV1 with a higher CRF, to save more space</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mediacurator<span class="w"> </span>convert<span class="w"> </span>--filters<span class="w"> </span>old<span class="w"> </span>--outputs<span class="w"> </span>av1<span class="w"> </span>--crf<span class="w"> </span><span class="m">35</span><span class="w"> </span>--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -141,12 +152,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#purge">Purge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#batch-repair-encoding-errors">Batch repair encoding errors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#batch-re-encode">Batch re-encode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-quality-settings">Custom quality settings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.1.1-changelog.html">mediacurator 1.1.1 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.2-changelog.html">mediacurator 1.0.2 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
 </ul>

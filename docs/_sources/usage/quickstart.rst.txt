@@ -17,6 +17,7 @@ To use `mediacurator`, execute the following command structure:
         [-fl/--filters fferror old lowres hd 720p 1080p uhd mpeg mpeg4 x264 wmv3 wmv]
         [-o/--outputs mkv/mp4 x265/av1]
         [-p/--printop list formatted verbose]
+        [--preset <name>] [--crf <value>]
         [-d/--dirs "/mnt/media/" "/mnt/media2/"]
         [-f/--files "file1.ext" "file2.ext"]
 
@@ -34,6 +35,8 @@ To use `mediacurator`, execute the following command structure:
 - `-p <print_option>` or `--printop <print_option>`: Set print options (default: `list`).
 - `-f <file>` or `--files <file>`: Specify files to process.
 - `-d <directory>` or `--dirs <directory>`: Specify directories to process.
+- `--preset <name>`: Encoder preset for `convert` (x265 default: `medium`, av1 default: `6`).
+- `--crf <value>`: Constant rate factor for `convert` (x265 default: `28`, av1 default: `30`). Lower is higher quality and larger files.
 
 **For multiple files or filenames, use space-separated values ( ).**
 
@@ -43,6 +46,7 @@ To use `mediacurator`, execute the following command structure:
 - `-fl/--filters`
 - `-o/--outputs mkv x265`
 - `-p/--printop list`
+- `--preset` / `--crf`: codec defaults (x265: `medium`, `28`; AV1: `6`, `30`; AV2: `30`)
 
 **Examples:**
 
@@ -58,5 +62,8 @@ The following examples demonstrate how to use `mediacurator` with the options li
 
     # Convert any video with AVI or MPG extensions, print formatted text including FFmpeg's output, and then delete the originals if size was reduced
     mediacurator convert --delete-on-reduce --inputs avi,mpg --printop formatted,verbose --dirs /mnt/media/
+
+    # Convert old-codec videos to x265 with the slow preset and CRF 24 for higher quality
+    mediacurator convert --filters old --preset slow --crf 24 --dirs /mnt/media/
 
 For more examples, see :doc:`use_cases`.

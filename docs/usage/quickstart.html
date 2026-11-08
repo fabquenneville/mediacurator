@@ -48,6 +48,7 @@ mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w">
 <span class="w">    </span><span class="o">[</span>-fl/--filters<span class="w"> </span>fferror<span class="w"> </span>old<span class="w"> </span>lowres<span class="w"> </span>hd<span class="w"> </span>720p<span class="w"> </span>1080p<span class="w"> </span>uhd<span class="w"> </span>mpeg<span class="w"> </span>mpeg4<span class="w"> </span>x264<span class="w"> </span>wmv3<span class="w"> </span>wmv<span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-o/--outputs<span class="w"> </span>mkv/mp4<span class="w"> </span>x265/av1<span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-p/--printop<span class="w"> </span>list<span class="w"> </span>formatted<span class="w"> </span>verbose<span class="o">]</span>
+<span class="w">    </span><span class="o">[</span>--preset<span class="w"> </span>&lt;name&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>--crf<span class="w"> </span>&lt;value&gt;<span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-d/--dirs<span class="w"> </span><span class="s2">&quot;/mnt/media/&quot;</span><span class="w"> </span><span class="s2">&quot;/mnt/media2/&quot;</span><span class="o">]</span>
 <span class="w">    </span><span class="o">[</span>-f/--files<span class="w"> </span><span class="s2">&quot;file1.ext&quot;</span><span class="w"> </span><span class="s2">&quot;file2.ext&quot;</span><span class="o">]</span>
 </pre></div>
@@ -65,6 +66,8 @@ mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w">
 <li><p><cite>-p &lt;print_option&gt;</cite> or <cite>–printop &lt;print_option&gt;</cite>: Set print options (default: <cite>list</cite>).</p></li>
 <li><p><cite>-f &lt;file&gt;</cite> or <cite>–files &lt;file&gt;</cite>: Specify files to process.</p></li>
 <li><p><cite>-d &lt;directory&gt;</cite> or <cite>–dirs &lt;directory&gt;</cite>: Specify directories to process.</p></li>
+<li><p><cite>–preset &lt;name&gt;</cite>: Encoder preset for <cite>convert</cite> (x265 default: <cite>medium</cite>, av1 default: <cite>6</cite>).</p></li>
+<li><p><cite>–crf &lt;value&gt;</cite>: Constant rate factor for <cite>convert</cite> (x265 default: <cite>28</cite>, av1 default: <cite>30</cite>). Lower is higher quality and larger files.</p></li>
 </ul>
 <p><strong>For multiple files or filenames, use space-separated values ( ).</strong></p>
 <p><strong>Default options:</strong></p>
@@ -73,6 +76,7 @@ mediacurator<span class="w"> </span><span class="o">[</span>list<span class="w">
 <li><p><cite>-fl/–filters</cite></p></li>
 <li><p><cite>-o/–outputs mkv x265</cite></p></li>
 <li><p><cite>-p/–printop list</cite></p></li>
+<li><p><cite>–preset</cite> / <cite>–crf</cite>: codec defaults (x265: <cite>medium</cite>, <cite>28</cite>; AV1: <cite>6</cite>, <cite>30</cite>; AV2: <cite>30</cite>)</p></li>
 </ul>
 <p><strong>Examples:</strong></p>
 <p>The following examples demonstrate how to use <cite>mediacurator</cite> with the options listed above:</p>
@@ -84,6 +88,9 @@ mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete<span
 
 <span class="c1"># Convert any video with AVI or MPG extensions, print formatted text including FFmpeg&#39;s output, and then delete the originals if size was reduced</span>
 mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete-on-reduce<span class="w"> </span>--inputs<span class="w"> </span>avi,mpg<span class="w"> </span>--printop<span class="w"> </span>formatted,verbose<span class="w"> </span>--dirs<span class="w"> </span>/mnt/media/
+
+<span class="c1"># Convert old-codec videos to x265 with the slow preset and CRF 24 for higher quality</span>
+mediacurator<span class="w"> </span>convert<span class="w"> </span>--filters<span class="w"> </span>old<span class="w"> </span>--preset<span class="w"> </span>slow<span class="w"> </span>--crf<span class="w"> </span><span class="m">24</span><span class="w"> </span>--dirs<span class="w"> </span>/mnt/media/
 </pre></div>
 </div>
 <p>For more examples, see <a class="reference internal" href="use_cases.html"><span class="doc">Use cases</span></a>.</p>
@@ -120,6 +127,7 @@ mediacurator<span class="w"> </span>convert<span class="w"> </span>--delete-on-r
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Release Notes:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.1.1-changelog.html">mediacurator 1.1.1 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.2-changelog.html">mediacurator 1.0.2 Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../releasenotes/1.0.1-changelog.html">mediacurator 1.0.1 Release Notes</a></li>
 </ul>

@@ -23,6 +23,7 @@ Synopsis
         [-fl/--filters fferror old lowres hd 720p 1080p uhd mpeg mpeg4 x264 wmv3 wmv]
         [-o/--outputs mkv/mp4 x265/av1]
         [-p/--printop list formatted verbose]
+        [--preset <name>] [--crf <value>]
         [-d/--dirs "/mnt/media/" "/mnt/media2/"]
         [-f/--files "file1.ext" "file2.ext"]
 
@@ -49,6 +50,7 @@ Synopsis
 - `-fl/--filters`: (none)
 - `-o/--outputs`: `mkv`, `x265`
 - `-p/--printop`: `list`
+- `--preset` / `--crf`: codec defaults (x265: `medium`, `28`; AV1: `6`, `30`; AV2: `30`)
 
 Description
 -----------
@@ -148,6 +150,25 @@ convert
 
     - **verbose**: Prints the FFmpeg output during conversions.
 
+--preset
+========
+    Encoder preset used by ``convert``. Overrides the default for the target codec.
+    Using it with ``list`` or ``test`` is an error.
+
+    - **x265**: ``ultrafast``, ``superfast``, ``veryfast``, ``faster``, ``fast``, ``medium``,
+      ``slow``, ``slower``, ``veryslow``, ``placebo`` (default: ``medium``)
+    - **av1**: a number from ``0`` (slowest, best quality) to ``13`` (fastest) (default: ``6``)
+    - **av2**: not supported yet, use ``--crf`` only
+
+--crf
+=====
+    Constant rate factor used by ``convert``. Lower values give higher quality and larger files.
+    Overrides the default for the target codec. Using it with ``list`` or ``test`` is an error.
+
+    - **x265**: 0 to 51 (default: ``28``)
+    - **av1**: 1 to 63 (default: ``30``)
+    - **av2**: default ``30``
+
 --dirs
 ======
     Short form: `-d`
@@ -180,6 +201,10 @@ Examples
     # This command converts AVI or MPG videos, displays detailed output during conversion, and
     # deletes originals if size was reduced.
     mediacurator convert --delete-on-reduce --inputs avi mpg --printop formatted verbose --dirs "/mnt/media/" "/mnt/media2/"
+
+    # This command converts old-codec videos to x265 with the slow preset and CRF 24,
+    # for higher quality at a larger size.
+    mediacurator convert --filters old --preset slow --crf 24 --dirs "/mnt/media/"
 
 For more examples, see :doc:`use_cases`
 
